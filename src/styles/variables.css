@@ -1,0 +1,119 @@
+/* ================================================================
+   variables.css
+   ----------------------------------------------------------------
+   📌 PURPOSE:
+   This file defines ALL design tokens for the entire website.
+   A "design token" is a named value for a color, size, font, etc.
+
+   ✅ RULE: Never write a raw value like "#e8437a" directly in any
+   other CSS file. Always define it here as a variable and then
+   reference it with var(--variable-name).
+
+   📁 IMPORTED BY: styles/global.css (once, at the top)
+   ================================================================ */
+
+:root {
+
+  /* ──────────────────────────────────────────────────────────
+     BRAND COLORS
+  ────────────────────────────────────────────────────────── */
+  --color-bg:     #0a0a0a;  /* Main page background — deep black         */
+  --color-white:  #ffffff;  /* Pure white — text, buttons, borders        */
+  --color-blue:   #0f8df5;  /* Accent blue  — "energy", CTA text          */
+  --color-pink:   #f41d88;  /* Accent pink  — "ADHD", highlights          */
+  --color-purple: #0081EB;  /* Accent purple — optional accents           */
+  --color-gradient: linear-gradient( 90deg, var(--color-blue), var(--color-pink) );
+
+  /* ──────────────────────────────────────────────────────────
+     NAVBAR COLORS
+     Opacity 30% dark glass pill effect
+  ────────────────────────────────────────────────────────── */
+  --color-nav-bg:        rgb(170, 170, 170); /* 30% opacity dark glass rgba(30, 30, 30, 0.30) */
+  --color-nav-bg-light:        rgba(219, 214, 214, 0.141);
+  --color-nav-border-light:    rgb(255, 255, 255); /* subtle white border rgba(255, 255, 255, 0.10) */
+  --color-nav-border-dark:    rgba(0, 90, 163, 0.3); /* subtle white border rgba(255, 255, 255, 0.10) */
+
+  --color-nav-mobile-btns: rgba(12, 12, 12, 0.686);  /* mobile dropdown bg     */
+  --color-nav-divider:   rgba(131, 131, 131, 0.416); /* divider between links*/
+  --color-nav-blue:#005AA3;
+  --color-nav-mobile-bg-dark: rgba(255, 255, 255, 0.95); /* solid white for light nav */
+--color-nav-mobile-bg-light: rgba(0, 0, 0, 0.55);      /* semi-transparent for dark nav */
+  /* ──────────────────────────────────────────────────────────
+     HERO COLORS
+  ────────────────────────────────────────────────────────── */
+  --color-hero-overlay: rgba(50, 50, 50, 0.3); /* Dark tint over bg image    */
+
+  /* ──────────────────────────────────────────────────────────
+     FOOTER COLORS
+  ────────────────────────────────────────────────────────── */
+  --color-footer-bg:   #f0b8ca; /* Light pink footer background            */
+  --color-footer-text: #ffffff; /* White text inside the footer            */
+
+  /* ──────────────────────────────────────────────────────────
+     TYPOGRAPHY — FONT FAMILIES
+     Loaded from Google Fonts in global.css
+  ────────────────────────────────────────────────────────── */
+  --font-display: 'akshar', sans-serif;     /* Headings, logo — bold display */
+  --font-title: 'akshar';
+  --font-body:    'DM Sans', sans-serif;  /* Body text, links, buttons      */
+
+  /* ──────────────────────────────────────────────────────────
+     TYPOGRAPHY — FONT SIZES
+     clamp(min, fluid, max) — scales smoothly between screen sizes
+  ────────────────────────────────────────────────────────── */
+  --fs-hero: clamp(2rem, 5vw, 4rem); /* Giant hero headline          */
+  --fs-h2:    clamp(1.8rem, 4vw, 3rem);     /* Section headings             */
+  --fs-h3:    clamp(1.2rem, 2.5vw, 1.8rem); /* Sub-section headings         */
+  --fs-body:  1rem;                          /* Default paragraph text       */
+  --fs-small: 0.88rem;                       /* Fine print, captions         */
+  --fs-nav:   0.95rem;                       /* Navbar link text             */
+  --fs-logo:  1.3rem;                        /* Logo text in navbar          */
+  --fs-btn:   1.05rem;                       /* Button label text            */
+
+  /* ──────────────────────────────────────────────────────────
+     SPACING SCALE
+     Always use these — never write raw px spacing values elsewhere
+  ────────────────────────────────────────────────────────── */
+  --space-2xs:  4px;    /* Tiny — icon spacing, tightest gaps              */
+  --space-xs:   8px;    /* Extra small — inner padding, close elements     */
+  --space-sm:   16px;   /* Small — list gaps, compact sections             */
+  --space-md:   24px;   /* Medium — standard padding                       */
+  --space-lg:   40px;   /* Large — between major sections                  */
+  --space-xl:   80px;   /* Extra large — hero vertical padding             */
+  --space-2xl: 120px;   /* Maximum — page-level breathing room             */
+
+  /* ──────────────────────────────────────────────────────────
+     BORDER RADIUS
+  ────────────────────────────────────────────────────────── */
+  --radius-sm:   6px;   /* Subtle rounding — tags, badges                  */
+  --radius-md:   16px;  /* Medium — cards, dropdowns                       */
+  --radius-lg:   24px;  /* Large — large cards                             */
+  --radius-pill: 50px;  /* Fully round — buttons, navbar pill              */
+
+  /* ──────────────────────────────────────────────────────────
+     NAVBAR DIMENSIONS
+  ────────────────────────────────────────────────────────── */
+  --navbar-height:      72px;    /* Height of the navbar pill               */
+  --navbar-top-offset:  16px;    /* Distance from the top of the screen     */
+  --navbar-side-margin: 32px;    /* Space from left & right screen edges    */
+  --navbar-max-width:   1450px;  /* Max width before it stops expanding     */
+
+  /* ──────────────────────────────────────────────────────────
+     LAYOUT
+  ────────────────────────────────────────────────────────── */
+  --max-width-content: 900px;   /* Max width of centered content blocks    */
+  --max-width-page:    1200px;  /* Max width of full-page sections          */
+
+  /* ──────────────────────────────────────────────────────────
+     TRANSITIONS
+     Use these for consistent hover/animation timing
+  ────────────────────────────────────────────────────────── */
+  --transition-fast:   0.15s ease;  /* Quick snappy feedback — buttons     */
+  --transition-normal: 0.25s ease;  /* Standard hover — links, opacity     */
+  --transition-slow:   0.4s ease;   /* Smooth reveals — menus, modals      */
+
+  /* ──────────────────────────────────────────────────────────
+     BLUR / GLASS EFFECT
+  ────────────────────────────────────────────────────────── */
+  --blur-glass: blur(6px); /* Frosted glass blur amount                   */
+}

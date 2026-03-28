@@ -1,0 +1,189 @@
+/* ================================================================
+   Hero.css
+   ----------------------------------------------------------------
+   📌 PURPOSE:
+   All styles specific to the Hero component — the full-screen
+   landing section that is the first thing visitors see.
+
+   🎨 DESIGN:
+   - Fills 100% of the viewport height (min-height: 100vh)
+   - Background image covered by a dark semi-transparent overlay
+   - Content is absolutely centered both horizontally and vertically
+   - Headline uses fluid type-scale (clamp) from variables.css
+   - Two CTA buttons side-by-side (stack on mobile)
+
+   📐 CLASSES IN THIS FILE:
+     .hero           → outer full-screen container
+     .hero-bg        → background image layer (position: absolute)
+     .hero-bg-img    → the <img> that fills the background
+     .hero-overlay   → dark tint on top of the image
+     .hero-content   → centered foreground content block
+     .hero-heading   → the large headline text
+     .hero-buttons   → wrapper for the two CTA buttons
+
+   📱 RESPONSIVE:
+     ≤ 768px → buttons stack vertically, tighter content gap
+     ≤ 480px → more top padding to clear the fixed navbar
+   ================================================================ */
+
+
+/* ── Outer full-screen container ───────────────────────────────
+   position:relative is required so the absolute background
+   children (.hero-bg) are contained inside this section.
+──────────────────────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;       /* fills the full viewport height              */
+  display: flex;
+  align-items: center;     /* vertically centers .hero-content             */
+  justify-content: center; /* horizontally centers .hero-content           */
+  text-align: center;
+  overflow: hidden;        /* clips the image from bleeding outside        */
+}
+
+
+/* ── Background layer ──────────────────────────────────────────
+   Sits behind all content using position:absolute + z-index:0.
+   Contains the image AND the dark overlay stacked on top.
+──────────────────────────────────────────────────────────────── */
+.hero-bg {
+  position: absolute;
+  inset: 0; /* shorthand for: top:0; right:0; bottom:0; left:0 */
+  z-index: 0;
+}
+
+
+/* ── Background image ──────────────────────────────────────────
+   object-fit:cover → fills the entire area without distortion.
+   object-position:center → keeps the center of the image visible.
+
+   🖼️ TO REPLACE:
+     1. Add your photo to the /public folder
+     2. In Hero.jsx, update: src="/your-image.jpg"
+──────────────────────────────────────────────────────────────── */
+.hero-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+
+/* ── Dark overlay ──────────────────────────────────────────────
+   Sits on top of the image to make the white headline readable.
+   Darkness controlled by --color-hero-overlay in variables.css.
+   Default: rgba(0,0,0, 0.55)
+   → Increase the last value toward 1.0 to darken
+   → Decrease toward 0 to lighten
+──────────────────────────────────────────────────────────────── */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--color-hero-overlay);
+}
+
+
+/* ── Foreground content block ──────────────────────────────────
+   position:relative + z-index:1 lifts this above the background.
+   max-width keeps text from stretching too wide on large screens.
+──────────────────────────────────────────────────────────────── */
+.hero-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* gap: var(--space-lg);          space between heading and buttons     */
+  padding: var(--space-xl) var(--space-md);
+  max-width: var(--max-width-content); /* 900px — prevents over-stretching*/
+  width: 100%;
+  padding-top: 9rem;
+ 
+}
+
+
+/* ── Main headline ─────────────────────────────────────────────
+   "Wondering if it's energy or ADHD?"
+   Font size uses clamp() for fluid scaling across all screens.
+   --fs-hero: clamp(2.4rem, 7vw, 5.5rem) from variables.css
+
+   Colored words use utility classes applied in JSX:
+     .text-blue → "energy"
+     .text-pink → "ADHD"
+──────────────────────────────────────────────────────────────── */
+.hero-heading {
+  font-family: var(--font-display);
+  font-size: var(--fs-hero);
+  font-weight: 800;
+  color: var(--color-white);
+
+
+  letter-spacing: -0.4px;
+
+  text-shadow: 5px 5px 8px rgba(0, 0, 0, 0.72);
+  margin-top: 3rem;
+  
+    max-width: 1000px;
+
+        line-height: 1.15;
+    margin-bottom: 1.5rem;
+}
+.hero-content p {
+  /* font-size: 1.2rem;
+  line-height: 1.6;
+  color: #eee;
+  max-width: 700px;
+  font-weight: 500; */
+    font-size: 1.2rem;
+    color: rgba(255,255,255,0.9);
+    max-width: 560px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.7;
+  
+}
+
+/* ── CTA buttons wrapper ───────────────────────────────────────
+   Side-by-side on desktop, stacked on mobile.
+   flex-wrap:wrap allows natural stacking when space is tight.
+   Button styles (.btn .btn-primary .btn-outline) are in global.css.
+──────────────────────────────────────────────────────────────── */
+.hero-buttons {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   RESPONSIVE — HERO
+──────────────────────────────────────────────────────────────── */
+
+/* ── Tablet ≤ 768px ── */
+@media (max-width: 768px) {
+
+  .hero-content {
+    gap: var(--space-md); /* reduce gap between heading and buttons */
+  }
+
+  /* Stack buttons vertically on tablet */
+  .hero-buttons {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+}
+
+/* ── Mobile ≤ 480px ── */
+@media (max-width: 480px) {
+
+  /* Extra top padding so content clears the fixed navbar */
+  .hero-content {
+    padding-top: 100px;
+    padding-bottom: var(--space-lg);
+    padding-left: var(--space-sm);
+    padding-right: var(--space-sm);
+  }
+}

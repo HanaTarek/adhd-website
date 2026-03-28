@@ -1,0 +1,116 @@
+/* ================================================================
+   Footer.css
+   ----------------------------------------------------------------
+   📌 PURPOSE:
+   All styles specific to the Footer component.
+   Imported directly inside Footer.jsx.
+
+   🎨 DESIGN:
+   - Soft pink background section at the bottom of every page
+   - Centered text content: brand name, tagline, disclaimer, copyright
+   - Clean and readable — white bold text on pink background
+
+   📐 CLASSES IN THIS FILE:
+     .footer             → outer pink background section
+     .footer-inner       → centered max-width content wrapper
+     .footer-brand       → "ADHD Aware" brand name
+     .footer-tagline     → short site description line
+     .footer-disclaimer  → medical/legal disclaimer paragraph
+     .footer-copy        → copyright line at the bottom
+
+   📱 RESPONSIVE:
+     ≤ 480px → reduce padding for small screen comfort
+   ================================================================ */
+
+
+/* ── Outer pink section ────────────────────────────────────────
+   Background color controlled by --color-footer-bg in variables.css.
+   To change the footer color site-wide → edit that variable.
+──────────────────────────────────────────────────────────────── */
+.footer {
+  background: linear-gradient(190deg, var(--color-blue), var(--color-pink));
+  padding: var(--space-lg) var(--space-md);
+  text-align: center;
+}
+
+
+/* ── Centered content wrapper ──────────────────────────────────
+   max-width: 700px prevents text from stretching too wide
+   on large desktop screens (improves line-length readability).
+   margin: 0 auto centers it horizontally.
+──────────────────────────────────────────────────────────────── */
+.footer-inner {
+  max-width: 700px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm); /* consistent spacing between each text block */
+}
+
+
+/* ── Brand name: "ADHD Aware" ──────────────────────────────────
+   Uses the display font (Syne) to give it visual weight and
+   distinguish it from the body text below.
+──────────────────────────────────────────────────────────────── */
+.footer-brand {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-footer-text);
+}
+
+
+/* ── Tagline ───────────────────────────────────────────────────
+   "A resource for families navigating ADHD together."
+   Bold weight makes it feel like a subtitle.
+──────────────────────────────────────────────────────────────── */
+.footer-tagline {
+  font-size: var(--fs-body);
+  font-weight: 600;
+  color: var(--color-footer-text);
+}
+
+
+/* ── Medical disclaimer ────────────────────────────────────────
+   Important for any health-related website.
+   Slightly smaller text and extra line-height for readability.
+   margin-top adds a small breathing space above it.
+──────────────────────────────────────────────────────────────── */
+.footer-disclaimer {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-footer-text);
+  line-height: 1.7;           /* generous line-height for multi-line text */
+  margin-top: var(--space-xs);
+}
+
+
+/* ── Copyright line ────────────────────────────────────────────
+   "© 2026 Listen to Their Minds. Made with ♥ for families everywhere."
+   Smallest text in the footer — fine print at the very bottom.
+──────────────────────────────────────────────────────────────── */
+.footer-copy {
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--color-footer-text);
+  margin-top: var(--space-xs);
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   RESPONSIVE — FOOTER
+──────────────────────────────────────────────────────────────── */
+
+/* ── Mobile ≤ 480px ── */
+@media (max-width: 480px) {
+
+  /* Reduce padding on very small screens */
+  .footer {
+    padding: var(--space-md) var(--space-sm);
+  }
+
+  /* Slightly reduce font size for the disclaimer on tiny screens */
+  .footer-disclaimer {
+    font-size: 0.85rem;
+  }
+}

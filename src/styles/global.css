@@ -1,0 +1,222 @@
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap');
+/* ================================================================
+   global.css
+   ----------------------------------------------------------------
+   📌 PURPOSE:
+   This file handles only the BASE styles that apply to the
+   entire site — resets, typography defaults, layout shell,
+   shared buttons, and utility classes.
+
+   Each component has its OWN dedicated .css file for its
+   specific styles. global.css does NOT contain component styles.
+
+   📐 FILE STRUCTURE (in order):
+     1. Google Fonts import
+     2. variables.css import
+     3. Reset & Base styles
+     4. Layout shell (.layout, .main)
+     5. Shared Button styles (.btn variants)
+     6. Shared Utility classes (.text-blue, .container, etc.)
+     7. Responsive overrides for base styles
+
+   ✅ RULES:
+   - Only put styles here that are truly SHARED across 2+ components
+   - Component-specific styles belong in the component's .css file
+   - Never use raw values — always use var(--token-name)
+
+   📁 IMPORTED BY: main.jsx (once, applies to the whole app)
+   ================================================================ */
+
+
+/* ────────────────────────────────────────────────────────────────
+   1. GOOGLE FONTS
+   Syne    → display/headings font (bold, geometric)
+   DM Sans → body/UI font (clean, readable)
+──────────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap');
+
+
+/* ────────────────────────────────────────────────────────────────
+   2. DESIGN TOKENS
+   All --color-*, --space-*, --font-*, --radius-* etc.
+──────────────────────────────────────────────────────────────── */
+@import './variables.css';
+
+
+/* ────────────────────────────────────────────────────────────────
+   3. RESET & BASE
+   Removes inconsistent browser defaults so every element
+   behaves the same across Chrome, Firefox, Safari, Edge.
+──────────────────────────────────────────────────────────────── */
+
+/* Box-sizing: border-radius model — padding doesn't add to width */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* App fills the full screen height */
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  background-color: var(--color-bg);
+  color: var(--color-white);
+  overflow-x: hidden;           /* prevent accidental horizontal scroll */
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;  /* smoother text rendering on Mac */
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Remove underline from all links; they inherit their parent's color */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Images should never overflow their container; remove bottom gap */
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Buttons inherit the site font instead of browser default */
+button {
+  font-family: var(--font-body);
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   4. LAYOUT SHELL
+   The outermost wrapper rendered by MainLayout.jsx.
+   Ensures Navbar + Content + Footer stack correctly.
+──────────────────────────────────────────────────────────────── */
+
+/* Full-height vertical flex column — wraps the whole page */
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Content area between Navbar and Footer */
+.main {
+  flex: 1; /* grows to fill space → keeps footer pinned to bottom */
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   5. SHARED BUTTONS
+   Reusable across ALL pages and components.
+
+   Usage in JSX:
+     <a className="btn btn-primary">Take the quiz</a>
+     <a className="btn btn-outline">Learn More</a>
+     <button className="btn btn-pink">Submit</button>
+──────────────────────────────────────────────────────────────── */
+
+/* Base — always pair with a variant class below */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* padding: 16px 45px; */
+  border-radius: var(--radius-pill);
+  /* font-size: var(--fs-btn); */
+  /* font-weight: 600; */
+  cursor: pointer;
+  border: none;
+  white-space: nowrap;
+
+   padding: 1rem 2.5rem;
+    /* border-radius: 999px; */
+    font-weight: 800;
+    font-size: 1rem;
+
+  transition:
+    transform var(--transition-fast),
+    opacity var(--transition-fast);
+}
+
+.btn:hover {
+  transform: translateY(-2px); /* subtle upward lift */
+  opacity: 0.9;
+}
+
+/* White background + blue text — primary call-to-action */
+.btn-primary {
+  background: var(--color-white);
+  color: var(--color-blue);
+}
+
+/* Transparent + white border — secondary call-to-action */
+.btn-outline {
+  background: transparent;
+  color: var(--color-white);
+  border: 2px solid var(--color-white);
+}
+
+/* Pink filled — highlights, alerts, emphasis */
+.btn-pink {
+  background: var(--color-pink);
+  color: var(--color-white);
+}
+
+/* Blue filled — alternate accent */
+.btn-blue {
+  background: var(--color-blue);
+  color: var(--color-bg);
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   6. UTILITY CLASSES
+   Standalone helpers — add to any element's className.
+
+   Usage:
+     <span className="text-blue">energy</span>
+     <span className="text-pink">ADHD</span>
+     <div className="container"> ... </div>
+──────────────────────────────────────────────────────────────── */
+
+.text-blue   { color: var(--color-blue); }
+.text-pink   { color: var(--color-pink); }
+.text-purple { color: var(--color-purple); }
+.text-white  { color: var(--color-white); }
+.text-center { text-align: center; }
+
+/* A centered, max-width page wrapper for section content */
+.container {
+  max-width: var(--max-width-page);
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   7. RESPONSIVE — BASE OVERRIDES
+   Adjustments to the base/shared styles for smaller screens.
+   Component-specific responsive styles live in their own .css files.
+──────────────────────────────────────────────────────────────── */
+
+/* ── Tablet ≤ 768px ── */
+@media (max-width: 768px) {
+  /* Stack buttons and stretch to full width on tablet */
+  .btn {
+    width: 100%;
+    max-width: 320px;
+    padding: 16px 32px;
+  }
+}
+
+/* ── Mobile ≤ 480px ── */
+@media (max-width: 480px) {
+  /* Slightly reduce base font size on very small screens */
+  body {
+    font-size: 0.95rem;
+  }
+}

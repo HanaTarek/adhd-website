@@ -1,0 +1,299 @@
+/* ================================================================
+   Navbar.css
+   ----------------------------------------------------------------
+   📌 PURPOSE:
+   All styles specific to the Navbar component.
+   Imported directly inside Navbar.jsx.
+
+   🎨 DESIGN:
+   A floating pill-shaped bar fixed at the top of the screen.
+   Uses glassmorphism: 30% opacity dark background + blur.
+   On mobile, text links hide and a hamburger dropdown appears.
+
+   📐 CLASSES IN THIS FILE:
+     .nav               → outer pill container
+     .nav-logo          → "Listen to Their Minds" logo text
+     .nav-links         → right-side wrapper (links + hamburger)
+     .nav-link          → individual desktop text links
+     .nav-menu-btn      → hamburger button (mobile only)
+     .nav-menu-btn span → the three lines of the hamburger icon
+     .nav-mobile-menu   → dropdown that appears on mobile
+     .nav-mobile-menu.open → visible state (toggled by React)
+     .nav-mobile-link   → links inside the mobile dropdown
+
+   📱 RESPONSIVE:
+     ≤ 768px → hide text links, show hamburger
+     ≤ 480px → tighten spacing, slightly smaller navbar
+   ================================================================ */
+
+
+/* ── Outer pill container ──────────────────────────────────────
+   Fixed at the top, centered, floating above the page.
+   30% opacity glass effect with backdrop blur.
+──────────────────────────────────────────────────────────────── */
+.logo {
+  height: 30px;   /* control size */
+  width: auto;    /* keep proportions */
+}
+.logo-logo{
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  gap: 5px;
+}
+.nav.navbar--light {
+  background: var(--color-nav-bg-light);         /* rgba(30,30,30, 0.30)       */
+  border: 1px solid var(--color-nav-border-light);
+  
+  backdrop-filter: var(--blur-glass);      /* blur(14px)                 */
+  -webkit-backdrop-filter: var(--blur-glass); /* Safari support           */
+
+}
+
+.nav.navbar--dark {
+   color: var(--color-white);
+   border: 1px solid var(--color-nav-border-dark);
+  background: rgba(255, 255, 255, 0.578);
+
+    backdrop-filter: var(--blur-glass);      /* blur(14px)                 */
+  -webkit-backdrop-filter: var(--blur-glass); /* Safari support           */
+}
+
+.nav {
+  position: fixed;               /* stays visible while scrolling         */
+  top: var(--navbar-top-offset); /* distance from top of screen           */
+  left: 50%;
+  transform: translateX(-50%);   /* perfectly horizontally centered       */
+  width: calc(100% - var(--navbar-side-margin));
+  max-width: var(--navbar-max-width);
+  height: var(--navbar-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+
+  /* Glassmorphism — 30% opacity dark + blur */
+  
+
+  border-radius: var(--radius-pill);       /* full pill shape            */
+  z-index: 100; /* above all other page content */
+  width: 100%;
+}
+.navbar--light .nav-link{
+ color: var(--color-white);
+ text-shadow: 0px 1px 8px rgba(0, 0, 0, 0.72);
+}
+.navbar--dark .nav-link{
+ color: var(--color-nav-blue);
+ text-shadow: 0px 3px 4px rgba(0, 90, 163, 0.455);
+}
+
+/* ── Logo: "Listen to Their Minds" ────────────────────────────
+   Color splits are applied via utility classes in JSX:
+     .text-white  → "Listen to "
+     .text-blue   → "Their "
+     .text-pink   → "Minds"
+──────────────────────────────────────────────────────────────── */
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: var(--fs-logo);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  white-space: nowrap; /* never wraps to a second line */
+  background: linear-gradient(
+    90deg,
+    var(--color-blue),
+    var(--color-pink)
+  );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  /* Modern standard (safe to include) */
+  background-clip: text;
+  color: transparent;
+
+}
+
+
+/* ── Right side wrapper: links + hamburger ─────────────────── */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+
+/* ── Desktop text links: "overview", "tips", "nutrition" ───── */
+.nav-link {
+  font-family: var(--font-body);
+  font-size: var(--fs-nav);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: opacity var(--transition-normal);
+  
+}
+
+.nav-link:hover {
+  opacity: 0.6; /* dims on hover for subtle feedback */
+}
+
+
+/* ── Hamburger button ──────────────────────────────────────────
+   Hidden on desktop (display:none), shown on mobile via media query.
+   Three horizontal spans form the ☰ icon.
+──────────────────────────────────────────────────────────────── */
+.nav-menu-btn {
+  display: none; /* hidden by default; shown at ≤768px */
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+/* Each of the three lines */
+.nav-menu-btn span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  border-radius: 2px;
+  transition: transform var(--transition-fast);
+  text-shadow: 0px 1px 8px rgba(0, 0, 0, 0.72);
+}
+.navbar--dark .nav-menu-btn span {
+  background: var(--color-nav-blue);
+}
+.navbar--light .nav-menu-btn span {
+  background: var(--color-white);
+}
+
+/* ── Mobile dropdown menu ──────────────────────────────────────
+   Positioned just below the pill navbar.
+   Controlled by the "open" class added via React state (useState).
+
+   Default: display:none (hidden)
+   With .open class: display:flex (visible)
+──────────────────────────────────────────────────────────────── */
+.nav-mobile-menu {
+  display: none; /* hidden until .open is added */
+  flex-direction: column;
+  position: absolute;
+  top: calc(var(--navbar-height) + 10px); /* just below the pill        */
+  left: 0;
+  right: 0;
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  border: 1px solid var(--color-nav-border-light);
+  gap: 4px;
+
+}
+/* .navbar--dark .nav-mobile-menu {
+   background-color: black;
+  backdrop-filter: var(--blur-glass);
+  -webkit-backdrop-filter: var(--blur-glass);
+  backdrop-filter: blur(10px);
+  text-shadow: 0px 1px 8px rgba(92, 92, 92, 0.645);
+} */
+/* .navbar--light .nav-mobile-menu {
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid var(--color-nav-border-light);
+  backdrop-filter: var(--blur-glass);
+  -webkit-backdrop-filter: var(--blur-glass);
+} */
+ /* Mobile menu on light nav (home) → solid white to match */
+.navbar--dark .nav-mobile-menu {
+  background: rgba(255, 255, 255, 0.97);
+  border: 1px solid var(--color-nav-border-dark);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Mobile menu on dark nav (other pages) → semi-transparent */
+.navbar--light .nav-mobile-menu {
+  background: rgba(56, 56, 56, 0.55);
+  border: 1px solid var(--color-nav-border-light);
+  backdrop-filter: var(--blur-glass);
+  -webkit-backdrop-filter: var(--blur-glass);
+}
+
+/* Mobile links: match text color to nav variant */
+.navbar--dark .nav-mobile-link {
+  color: var(--color-nav-blue);
+  border-bottom-color: var(--color-nav-border-dark);
+}
+
+.navbar--light .nav-mobile-link {
+  color: var(--color-white);
+  border-bottom-color: var(--color-nav-border-light);
+}
+
+/* React adds "open" class → menu becomes visible */
+.nav-mobile-menu.open {
+  display: flex;
+  
+}
+
+
+/* ── Mobile dropdown links ─────────────────────────────────── */
+.nav-mobile-link {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-white);
+  padding: 12px var(--space-xs);
+  transition: color var(--transition-normal);
+  border-bottom: 1px solid var(--color-nav-border-light);
+}
+
+/* Remove divider from the last link */
+.nav-mobile-link:last-child {
+  border-bottom: none;
+}
+
+.nav-mobile-link:hover {
+  color: var(--color-blue);
+  text-shadow: 0px 1px 8px rgba(125, 120, 120, 0);
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   RESPONSIVE — NAVBAR
+──────────────────────────────────────────────────────────────── */
+
+/* ── Tablet ≤ 768px ── */
+@media (max-width: 768px) {
+
+  .nav {
+    top: 12px;
+    width: calc(100% - 24px);
+    padding: 0 20px;
+  }
+
+  /* Hide desktop text links — replaced by hamburger dropdown */
+  .nav-link {
+    display: none;
+  }
+
+  /* Show the hamburger button */
+  .nav-menu-btn {
+    display: flex;
+    text-shadow: 0px 1px 8px rgba(0, 0, 0, 0.72);
+  
+  }
+
+}
+
+/* ── Mobile ≤ 480px ── */
+@media (max-width: 480px) {
+  :root {
+    --navbar-height:     60px;  /* slightly shorter pill on small screens  */
+    --fs-logo:           1rem;  /* smaller logo text                        */
+    --navbar-top-offset: 10px;
+  }
+
+  .nav {
+    padding: 0 14px;
+    border-radius: 40px; /* slightly less round on very small screens */
+  }
+}
