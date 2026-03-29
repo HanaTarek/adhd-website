@@ -85,9 +85,12 @@ const Navbar = () => {
           Clicking any link also closes the menu.
       ──────────────────────────────────────────────────────── */}
       <div className={`nav-mobile-menu ${menuOpen ? 'open' : ''}`}>
-        <a href="#overview"  className="nav-mobile-link" onClick={() => setMenuOpen(false)}>overview</a>
-        <a href="#tips"      className="nav-mobile-link" onClick={() => setMenuOpen(false)}>tips</a>
-        <a href="#nutrition" className="nav-mobile-link" onClick={() => setMenuOpen(false)}>nutrition</a>
+        <Link to="/about" className="nav-mobile-link" onClick={() => setMenuOpen(false)}>
+          ABOUT
+        </Link>
+        <Link to="/symptoms" className="nav-mobile-link" onClick={() => setMenuOpen(false)}>
+          SYMPTOMS
+        </Link>
       </div>
 
     </nav>
