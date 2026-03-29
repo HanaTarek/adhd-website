@@ -182,7 +182,184 @@ export const QUESTIONS = [
   /* ── GROUP C: Oppositional-Defiant Symptoms (Q19–26) ──────────
      Screen requires ≥4 positives from this group
   ─────────────────────────────────────────────────────────────── */
-  
+   {
+    id: 19,
+    text: 'Argues with adults',
+    type: 'symptom',
+    group: 'C',
+  },
+  {
+    id: 20,
+    text: 'Loses temper',
+    type: 'symptom',
+    group: 'C',
+  },
+  {
+    id: 21,
+    text: 'Actively defies or refuses to go along with adults’ requests or rules',
+    type: 'symptom',
+    group: 'C',
+  },
+  {
+    id: 22,
+    text: 'Deliberately annoys people',
+    type: 'symptom',
+    group: 'C',
+  },
+  {
+    id: 23,
+    text: 'Blames others for his or her mistakes or misbehaviors',
+    type: 'symptom',
+    group: 'C',
+  },
+  {
+    id: 24,
+    text: 'Is touchy or easily annoyed by others',
+    type: 'symptom',
+    group: 'C',
+  },
+  {
+    id: 25,
+    text: 'Is angry or resentful',
+    type: 'symptom',
+    group: 'C',
+  },
+  {
+    id: 26,
+    text: 'Is spiteful and wants to get even',
+    type: 'symptom',
+    group: 'C',
+  },
+
+  /* ── GROUP D: Conduct Disorder Symptoms (Q27–40) ───────────── */
+  {
+    id: 27,
+    text: 'Bullies, threatens, or intimidates others',
+    type: 'symptom',
+    group: 'D',
+  },
+  {
+    id: 28,
+    text: 'Starts physical fights',
+    type: 'symptom',
+    group: 'D',
+  },
+  {
+    id: 29,
+    text: 'Lies to get out of trouble or to avoid obligations',
+    type: 'symptom',
+    group: 'D',
+  },
+  {
+    id: 30,
+    text: 'Is truant from school (skips school) without permission',
+    type: 'symptom',
+    group: 'D',
+  },
+  {
+    id: 31,
+    text: 'Is physically cruel to people',
+    type: 'symptom',
+    group: 'D',
+  },
+  {
+    id: 32,
+    text: 'Has stolen things that have value',
+    type: 'symptom',
+    group: 'D',
+  },
+  {
+    id: 33,
+    text: 'Deliberately destroys others’ property',
+    type: 'symptom',
+    group: 'D',
+  },
+  {
+    id: 34,
+    text: 'Has used a weapon that can cause serious harm (bat, knife, brick, gun)',
+    type: 'symptom',
+    group: 'D',
+  },
+  {
+    id: 35,
+    text: 'Is physically cruel to animals',
+    type: 'symptom',
+    group: 'D',
+  },
+  {
+    id: 36,
+    text: 'Has deliberately set fires to cause damage',
+    type: 'symptom',
+    group: 'D',
+  },
+  {
+    id: 37,
+    text: 'Has broken into someone else’s home, business, or car',
+    type: 'symptom',
+    group: 'D',
+  },
+  {
+    id: 38,
+    text: 'Has stayed out at night without permission',
+    type: 'symptom',
+    group: 'D',
+  },
+  {
+    id: 39,
+    text: 'Has run away from home overnight',
+    type: 'symptom',
+    group: 'D',
+  },
+  {
+    id: 40,
+    text: 'Has forced someone into sexual activity',
+    type: 'symptom',
+    group: 'D',
+  },
+
+  /* ── GROUP E: Anxiety / Depression Symptoms (Q41–47) ───────── */
+  {
+    id: 41,
+    text: 'Is fearful, anxious, or worried',
+    type: 'symptom',
+    group: 'E',
+  },
+  {
+    id: 42,
+    text: 'Is afraid to try new things for fear of making mistakes',
+    type: 'symptom',
+    group: 'E',
+  },
+  {
+    id: 43,
+    text: 'Feels worthless or inferior',
+    type: 'symptom',
+    group: 'E',
+  },
+  {
+    id: 44,
+    text: 'Blames self for problems, feels guilty',
+    type: 'symptom',
+    group: 'E',
+  },
+  {
+    id: 45,
+    text: 'Feels lonely, unwanted, or unloved; complains that no one loves him or her',
+    type: 'symptom',
+    group: 'E',
+  },
+  {
+    id: 46,
+    text: 'Is sad, unhappy, or depressed',
+    type: 'symptom',
+    group: 'E',
+  },
+  {
+    id: 47,
+    text: 'Is self-conscious or easily embarrassed',
+    type: 'symptom',
+    group: 'E',
+  },
 
   /* ── GROUP F: Performance Questions (Q48–55) ──────────────────
      Scored 1–5 (not 0–3). Score of 4 or 5 = positive.
@@ -236,6 +413,7 @@ export const QUESTIONS = [
     type: 'performance',
     group: 'F',
   },
+
 ]
 
 

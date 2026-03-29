@@ -43,6 +43,9 @@ import {
 const SECTION_LABELS = {
   A: 'Inattentive Symptoms',
   B: 'Hyperactive / Impulsive Symptoms',
+  C: 'Oppositional-Defiant Symptoms',
+  D: 'Conduct Disorder Symptoms',
+  E: 'Anxiety / Depression Symptoms',
   F: 'Performance & Daily Functioning',
 }
 

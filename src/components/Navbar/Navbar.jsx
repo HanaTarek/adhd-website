@@ -15,7 +15,7 @@
    ================================================================ */
 
 import { useState } from 'react'
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import './Navbar.css'
 import logo from '/adhdlogo.png';
 
@@ -47,10 +47,10 @@ const Navbar = () => {
       ──────────────────────────────────────────────────────── */}
       <div className="logo-logo">
       <img src={logo} alt="Logo" className="logo"></img>
-      <div className="nav-logo">
+      <Link to={"/"} className="nav-logo">
         
         Listen to Their Minds
-      </div>
+      </Link>
       </div>
 
       {/* ── Right Side: Links + Hamburger ─────────────────────
@@ -58,9 +58,10 @@ const Navbar = () => {
           .nav-menu-btn → hidden on desktop, visible on mobile (CSS)
       ──────────────────────────────────────────────────────── */}
       <div className="nav-links">
-        <a href="#overview"  className="nav-link">overview</a>
-        <a href="#tips"      className="nav-link">tips</a>
-        <a href="#nutrition" className="nav-link">nutrition</a>
+        <Link to={"/about"}  className="nav-link">ABOUT</Link>
+        <Link to={"/symptoms"} className="nav-link">SYMPTOMS</Link>
+        <a href="#tips"      className="nav-link">TIPS</a>
+        <a href="#nutrition" className="nav-link">NUTRITION</a>
 
         {/*
           Hamburger button — only shows on mobile.

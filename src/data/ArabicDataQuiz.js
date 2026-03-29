@@ -182,7 +182,188 @@ export const QUESTIONS = [
   /* ── GROUP C: Oppositional-Defiant Symptoms (Q19–26) ──────────
      Screen requires ≥4 positives from this group
   ─────────────────────────────────────────────────────────────── */
-  
+    /* ── GROUP C: Oppositional-Defiant Symptoms (Q19–26) ──────────
+     Screen requires ≥4 positives from this group
+  ─────────────────────────────────────────────────────────────── */
+   {
+    id: 19,
+    text: 'يجادل الكبار',
+    type: 'symptom',
+    group: 'C',
+  },
+  {
+    id: 20,
+    text: 'يفقد أعصابه',
+    type: 'symptom',
+    group: 'C',
+  },
+  {
+    id: 21,
+    text: 'يتعمد معارضة أو رفض طلبات أو قواعد الكبار',
+    type: 'symptom',
+    group: 'C',
+  },
+  {
+    id: 22,
+    text: 'يتعمد إزعاج الناس',
+    type: 'symptom',
+    group: 'C',
+  },
+  {
+    id: 23,
+    text: 'يحمّل الآخرين مسؤولية أخطائه أو سلوكه السيئ',
+    type: 'symptom',
+    group: 'C',
+  },
+  {
+    id: 24,
+    text: 'سريع الاستثارة أو ينزعج بسهولة من الآخرين',
+    type: 'symptom',
+    group: 'C',
+  },
+  {
+    id: 25,
+    text: 'غاضب أو ممتعض',
+    type: 'symptom',
+    group: 'C',
+  },
+  {
+    id: 26,
+    text: 'حاقد ويسعى للانتقام',
+    type: 'symptom',
+    group: 'C',
+  },
+
+  /* ── GROUP D: Conduct Disorder Symptoms (Q27–40) ───────────── */
+  {
+    id: 27,
+    text: 'يتنمّر على الآخرين أو يهددهم أو يرهبهم',
+    type: 'symptom',
+    group: 'D',
+  },
+  {
+    id: 28,
+    text: 'يبدأ شجارات جسدية',
+    type: 'symptom',
+    group: 'D',
+  },
+  {
+    id: 29,
+    text: 'يكذب لتجنب الوقوع في المشاكل أو للتهرب من المسؤوليات (يخدع الآخرين)',
+    type: 'symptom',
+    group: 'D',
+  },
+  {
+    id: 30,
+    text: 'يتغيب عن المدرسة دون إذن',
+    type: 'symptom',
+    group: 'D',
+  },
+  {
+    id: 31,
+    text: 'يمارس عنفًا جسديًا تجاه الآخرين',
+    type: 'symptom',
+    group: 'D',
+  },
+  {
+    id: 32,
+    text: 'يسرق أشياء ذات قيمة',
+    type: 'symptom',
+    group: 'D',
+  },
+  {
+    id: 33,
+    text: 'يتلف ممتلكات الآخرين عمداً',
+    type: 'symptom',
+    group: 'D',
+  },
+  {
+    id: 34,
+    text:'يستخدم سلاحًا يمكن أن يسبب أذىً خطيرًا (مثل عصا، سكين، طوبة، أو سلاح ناري)',
+    type: 'symptom',
+    group: 'D',
+  },
+  {
+    id: 35,
+    text: 'يمارس عنفًا جسديًا تجاه الحيوانات',
+    type: 'symptom',
+    group: 'D',
+  },
+  {
+    id: 36,
+    text: 'يشعل حرائق عمدًا لإحداث أضرار',
+    type: 'symptom',
+    group: 'D',
+  },
+  {
+    id: 37,
+    text: 'يقتحم منزلًا أو مكان عمل أو سيارة تخص شخصًا آخر',
+    type: 'symptom',
+    group: 'D',
+  },
+  {
+    id: 38,
+    text: 'يبقى خارج المنزل ليلًا دون إذن',
+    type: 'symptom',
+    group: 'D',
+  },
+  {
+    id: 39,
+    text: 'يهرب من المنزل ويقضي الليل خارجه',
+    type: 'symptom',
+    group: 'D',
+  },
+  {
+    id: 40,
+    text: 'يجبر شخصًا على نشاط جنسي',
+    type: 'symptom',
+    group: 'D',
+  },
+
+  /* ── GROUP E: Anxiety / Depression Symptoms (Q41–47) ───────── */
+  {
+    id: 41,
+    text: 'يشعر بالخوف أو القلق أو التوتر',
+    type: 'symptom',
+    group: 'E',
+  },
+  {
+    id: 42,
+    text: 'خشى تجربة أشياء جديدة خوفًا من ارتكاب الأخطاء',
+    type: 'symptom',
+    group: 'E',
+  },
+  {
+    id: 43,
+    text: 'يشعر بأنه عديم القيمة أو أقل من الآخرين',
+    type: 'symptom',
+    group: 'E',
+  },
+  {
+    id: 44,
+    text: 'يلوم نفسه على المشكلات ويشعر بالذنب',
+    type: 'symptom',
+    group: 'E',
+  },
+  {
+    id: 45,
+    text: 'يشعر بالوحدة أو بأنه غير مرغوب فيه أو غير محبوب، ويشتكي أن لا أحد يحبه',
+    type: 'symptom',
+    group: 'E',
+  },
+  {
+    id: 46,
+    text: 'يشعر بالحزن أو التعاسة أو الاكتئاب',
+    type: 'symptom',
+    group: 'E',
+  },
+  {
+    id: 47,
+    text: 'خجول أو سريع الإحراج',
+    type: 'symptom',
+    group: 'E',
+  },
+
 
   /* ── GROUP F: Performance Questions (Q48–55) ──────────────────
      Scored 1–5 (not 0–3). Score of 4 or 5 = positive.

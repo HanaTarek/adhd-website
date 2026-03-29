@@ -108,7 +108,7 @@ const Hero = () => {
           <Link to="/quiz" className="btn btn-primary">
             Take the quiz
           </Link>
-          <a href="#learn" className="btn btn-outline">Learn More</a>
+          <Link to="/about" className="btn btn-outline">Learn More</Link>
         </div>
 
       </div>

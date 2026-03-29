@@ -17,8 +17,9 @@
   /* ──────────────────────────────────────────────────────────
      BRAND COLORS
   ────────────────────────────────────────────────────────── */
-  --color-bg:     #0a0a0a;  /* Main page background — deep black         */
+  --color-bg:     #fff8f8;  /* Main page background — deep black         */
   --color-white:  #ffffff;  /* Pure white — text, buttons, borders        */
+  --color-black:  #000000;
   --color-blue:   #0f8df5;  /* Accent blue  — "energy", CTA text          */
   --color-pink:   #f41d88;  /* Accent pink  — "ADHD", highlights          */
   --color-purple: #0081EB;  /* Accent purple — optional accents           */
