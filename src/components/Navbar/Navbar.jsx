@@ -15,7 +15,7 @@
    ================================================================ */
 
 import { useState } from 'react'
-import { Link, useLocation } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import './Navbar.css'
 import logo from '/adhdlogo.png';
 
@@ -29,6 +29,14 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false)
   const location = useLocation();
   const isHome = location.pathname === "/";
+
+const navigate = useNavigate();
+
+const handleQuizClick = () => {
+  window.scrollTo(0, 0);
+  // Always navigate with a fresh ?r= param — forces Quiz to remount
+  navigate(`/quiz?r=${Date.now()}`);
+};
 
   return (
     /*
@@ -47,10 +55,10 @@ const Navbar = () => {
       ──────────────────────────────────────────────────────── */}
       <div className="logo-logo">
       <img src={logo} alt="Logo" className="logo"></img>
-      <Link to={"/"} className="nav-logo">
+      <NavLink to={"/"} className="nav-logo" onClick={() => setMenuOpen(false)}>
         
         Listen to Their Minds
-      </Link>
+      </NavLink>
       </div>
 
       {/* ── Right Side: Links + Hamburger ─────────────────────
@@ -58,16 +66,26 @@ const Navbar = () => {
           .nav-menu-btn → hidden on desktop, visible on mobile (CSS)
       ──────────────────────────────────────────────────────── */}
       <div className="nav-links">
-        <Link to={"/about"}  className="nav-link">ABOUT</Link>
-        <Link to={"/symptoms"} className="nav-link">SYMPTOMS</Link>
-        <a href="#tips"      className="nav-link">TIPS</a>
-        <a href="#nutrition" className="nav-link">NUTRITION</a>
+        <NavLink to={"/"} className={({ isActive }) => isActive ? "nav-link active" : "nav-link" } onClick={()=>{window.scrollTo(0, 0);}}>HOME</NavLink>
+        <NavLink to={"/about"}  className={({ isActive }) => isActive ? "nav-link active" : "nav-link" } onClick={()=>{window.scrollTo(0, 0);}}>ABOUT</NavLink>
+
+        <NavLink to={"/symptoms"} className={({ isActive }) => isActive ? "nav-link active" : "nav-link" } onClick={()=>{window.scrollTo(0, 0);}}>SYMPTOMS</NavLink>
+        <NavLink to={"/causes"} className={({ isActive }) => isActive ? "nav-link active" : "nav-link" } onClick={()=>{window.scrollTo(0, 0);}}>CAUSES</NavLink>
+        <NavLink to={"/treatment"} className={({ isActive }) => isActive ? "nav-link active" : "nav-link" } onClick={()=>{window.scrollTo(0, 0);}}>TREATMENT</NavLink>
+        <NavLink to={"/support"} className={({ isActive }) => isActive ? "nav-link active" : "nav-link" } onClick={()=>{window.scrollTo(0, 0);}}>SUPPORT</NavLink>
+        <NavLink to={"/nutrition"} className={({ isActive }) => isActive ? "nav-link active" : "nav-link" } onClick={()=>{window.scrollTo(0, 0);}}>HEALTHY HABITS</NavLink>
+        <button className="btn btn-outline n-btn nav-link" onClick={handleQuizClick}>
+          Take The Quiz
+        </button>
+        
+
 
         {/*
           Hamburger button — only shows on mobile.
           onClick: flips menuOpen between true ↔ false.
           aria-label: describes the button for screen readers.
         */}
+
         <button
           className="nav-menu-btn"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -85,12 +103,34 @@ const Navbar = () => {
           Clicking any link also closes the menu.
       ──────────────────────────────────────────────────────── */}
       <div className={`nav-mobile-menu ${menuOpen ? 'open' : ''}`}>
-        <Link to="/about" className="nav-mobile-link" onClick={() => setMenuOpen(false)}>
+        <NavLink to="/" className="nav-mobile-link" onClick={() => setMenuOpen(false)}>
+          HOME
+        </NavLink>
+        <NavLink to="/about" className="nav-mobile-link" onClick={() => setMenuOpen(false)}>
           ABOUT
-        </Link>
-        <Link to="/symptoms" className="nav-mobile-link" onClick={() => setMenuOpen(false)}>
+        </NavLink>
+        <NavLink to="/symptoms" className="nav-mobile-link" onClick={() => setMenuOpen(false)}>
           SYMPTOMS
-        </Link>
+        </NavLink>
+        <NavLink to="/causes" className="nav-mobile-link" onClick={() => setMenuOpen(false)}>
+          CAUSES
+        </NavLink>
+        <NavLink to="/treatment" className="nav-mobile-link" onClick={() => setMenuOpen(false)}>
+          TREATMENT
+        </NavLink>
+        <NavLink to="/support" className="nav-mobile-link" onClick={() => setMenuOpen(false)}>
+          SUPPORT
+        </NavLink>
+        <NavLink to="/nutrition" className="nav-mobile-link" onClick={() => setMenuOpen(false)}>
+          HEALTHY HABITS
+        </NavLink>
+       <button
+            className="nav-mobile-link"
+            onClick={() => { setMenuOpen(false); handleQuizClick(); }}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', padding: 0 }}
+          >
+            Take The Quiz
+          </button>
       </div>
 
     </nav>

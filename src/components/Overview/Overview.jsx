@@ -119,7 +119,7 @@ export default function ADHDOverview() {
           {/* RIGHT — image */}
           <div className="ao-hero__image-wrap">
             <img
-              src="/AD.jpg"
+              src="/AD.webp"
               alt="Children playing and learning"
               className="ao-hero__image"
             />

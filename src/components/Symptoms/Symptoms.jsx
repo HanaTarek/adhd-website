@@ -221,7 +221,7 @@ export default function Symptoms() {
                 <span className="s-tag">Early support matters</span>
               </div>
               <Link to="/quiz" className="btn btn-outline-blue s-cta-banner__btn">
-                Explore Symptoms →
+                Take The Quiz →
               </Link>
             </div>
           </div>

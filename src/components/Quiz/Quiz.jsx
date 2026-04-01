@@ -26,9 +26,9 @@
    📦 USED IN: pages/QuizPage.jsx
    ================================================================ */
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import './Quiz.css'
-import { Link } from 'react-router-dom'
 import {
   QUESTIONS,
   SYMPTOM_OPTIONS,
@@ -50,6 +50,17 @@ const SECTION_LABELS = {
 }
 
 const Quiz = () => {
+
+    const location = useLocation();
+
+useEffect(() => {
+  if (location.state?.retake) {
+    setCurrentIndex(0);
+    setAnswers({});
+    setSubmitted(false);
+    setResult(null);
+  }
+}, [location.state?.retake]);
 
   /* ── State ───────────────────────────────────────────────────
      currentIndex: which question we're on (0 = first question)

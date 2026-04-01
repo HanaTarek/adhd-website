@@ -23,6 +23,8 @@
   --color-blue:   #0f8df5;  /* Accent blue  — "energy", CTA text          */
   --color-pink:   #f41d88;  /* Accent pink  — "ADHD", highlights          */
   --color-purple: #0081EB;  /* Accent purple — optional accents           */
+  --green: #4A7C59;
+  --green-light: #E8F2EB;
   --color-gradient: linear-gradient( 90deg, var(--color-blue), var(--color-pink) );
 
   /* ──────────────────────────────────────────────────────────

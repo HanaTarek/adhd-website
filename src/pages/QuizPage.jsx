@@ -16,21 +16,12 @@
 
    📦 USED IN: App.jsx → <Route path="/quiz" element={<QuizPage />} />
    ================================================================ */
+import { useLocation } from 'react-router-dom'
+import Quiz from '../components/Quiz/Quiz.jsx'
 
-import Quiz from '../components/Quiz/Quiz'
-
-const QuizPage = () => {
-  return (
-    /*
-      Quiz component handles everything:
-      - question rendering
-      - progress bar
-      - answer collection
-      - scoring
-      - results display
-    */
-    <Quiz />
-  )
+function QuizPage() {
+  const location = useLocation();
+  const key = new URLSearchParams(location.search).get('r') || 'default';
+  return <Quiz key={key} />;
 }
-
-export default QuizPage
+export default QuizPage;

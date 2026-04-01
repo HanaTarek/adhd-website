@@ -106,7 +106,7 @@ const Hero = () => {
         ──────────────────────────────────────────────────────── */}
         <div className="hero-buttons">
           <Link to="/quiz" className="btn btn-primary">
-            Take the quiz
+            Take The Quiz
           </Link>
           <Link to="/about" className="btn btn-outline">Learn More</Link>
         </div>

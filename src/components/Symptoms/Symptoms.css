@@ -227,7 +227,7 @@
   color: var(--color-nav-blue);
   margin-bottom: 4px;
 }
-.s-card__desc  { font-size: 0.85rem; color: #6b7280; line-height: 1.6; }
+.s-card__desc  { font-size: 0.89rem; color: #6b7280; line-height: 1.6; }
 
 /* ── RULE CARDS — 2×2 wider grid ───────────────────────────── */
 .s-rule-grid {
@@ -268,7 +268,7 @@
   color: var(--color-nav-blue);
   margin-bottom: 8px;
 }
-.s-rule-desc  { font-size: 14px; color: #6b7280; line-height: 1.65; }
+.s-rule-desc  { font-size: 0.89rem; color: #6b7280; line-height: 1.65; }
 
 /* ── CTA BANNER ─────────────────────────────────────────────── */
 .s-cta-banner {
@@ -332,7 +332,7 @@
   .s-split--reverse {
     direction: ltr; /* reset — stacks naturally */
   }
-  .s-img-card img { height: 280px; }
+  .s-img-card img { height: auto; }
   .s-rule-grid { grid-template-columns: 1fr; }
 }
 
