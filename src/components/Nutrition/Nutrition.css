@@ -610,7 +610,18 @@
   .n-nutrients-grid     { grid-template-columns: repeat(2, 1fr); }
   .n-act-tabs           { gap: 8px; }
   .n-act-cards-grid     { grid-template-columns: repeat(2, 1fr); }
+
+  .n-research-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
 }
 @media (max-width: 420px) {
   .n-act-cards-grid     { grid-template-columns: 1fr; }
+    .n-research-grid {
+    grid-template-columns: 1fr; /* ONE COLUMN */
+  }
+  .n-nutrients-cards   { grid-template-columns: 1fr; }
+   .n-hero__lead        { max-width: 100%; }
+   .n-hero__image       { height: 220px; }
 }

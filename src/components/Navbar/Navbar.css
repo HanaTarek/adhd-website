@@ -155,7 +155,11 @@
   opacity: 0.6; /* dims on hover for subtle feedback */
 }
 
-
+.nav-mobile-link.active {
+  color: var(--color-blue);        /* or whatever your active colour is */
+  font-weight: 700;
+  text-decoration: underline;
+}
 /* ── Hamburger button ──────────────────────────────────────────
    Hidden on desktop (display:none), shown on mobile via media query.
    Three horizontal spans form the ☰ icon.

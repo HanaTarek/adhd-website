@@ -460,4 +460,7 @@
   .ao-brain-card { padding: 20px 16px; }
   .ao-tl-item__line { left: 19px; }
   .ao-tl-item__num  { width: 40px; height: 40px; font-size: 0.85rem; }
+  .ao-cta-banner__inner { flex-direction: column; text-align: center; }
+  .ao-cta-banner__lead  { margin: 0 auto; }
+  .ao-cta-banner__inner { padding: var(--space-md); }
 }

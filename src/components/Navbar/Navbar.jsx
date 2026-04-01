@@ -29,6 +29,8 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false)
   const location = useLocation();
   const isHome = location.pathname === "/";
+ 
+  const isOnQuiz = location.pathname === '/quiz';
 
 const navigate = useNavigate();
 
@@ -74,10 +76,12 @@ const handleQuizClick = () => {
         <NavLink to={"/treatment"} className={({ isActive }) => isActive ? "nav-link active" : "nav-link" } onClick={()=>{window.scrollTo(0, 0);}}>TREATMENT</NavLink>
         <NavLink to={"/support"} className={({ isActive }) => isActive ? "nav-link active" : "nav-link" } onClick={()=>{window.scrollTo(0, 0);}}>SUPPORT</NavLink>
         <NavLink to={"/nutrition"} className={({ isActive }) => isActive ? "nav-link active" : "nav-link" } onClick={()=>{window.scrollTo(0, 0);}}>HEALTHY HABITS</NavLink>
-        <button className="btn btn-outline n-btn nav-link" onClick={handleQuizClick}>
-          Take The Quiz
-        </button>
-        
+        <button
+            className={`btn btn-outline n-btn nav-link${isOnQuiz ? ' active' : ''}`}
+            onClick={handleQuizClick}
+          >
+            Take The Quiz
+          </button>
 
 
         {/*
@@ -103,34 +107,34 @@ const handleQuizClick = () => {
           Clicking any link also closes the menu.
       ──────────────────────────────────────────────────────── */}
       <div className={`nav-mobile-menu ${menuOpen ? 'open' : ''}`}>
-        <NavLink to="/" className="nav-mobile-link" onClick={() => setMenuOpen(false)}>
+        <NavLink to="/" className={({ isActive }) => isActive ? "nav-mobile-link active" : "nav-mobile-link" } onClick={() => {setMenuOpen(false);window.scrollTo(0, 0);}}>
           HOME
         </NavLink>
-        <NavLink to="/about" className="nav-mobile-link" onClick={() => setMenuOpen(false)}>
+        <NavLink to="/about" className={({ isActive }) => isActive ? "nav-mobile-link active" : "nav-mobile-link" } onClick={() => {setMenuOpen(false);window.scrollTo(0, 0);}}>
           ABOUT
         </NavLink>
-        <NavLink to="/symptoms" className="nav-mobile-link" onClick={() => setMenuOpen(false)}>
+        <NavLink to="/symptoms" className={({ isActive }) => isActive ? "nav-mobile-link active" : "nav-mobile-link" } onClick={() => {setMenuOpen(false);window.scrollTo(0, 0);}}>
           SYMPTOMS
         </NavLink>
-        <NavLink to="/causes" className="nav-mobile-link" onClick={() => setMenuOpen(false)}>
+        <NavLink to="/causes" className={({ isActive }) => isActive ? "nav-mobile-link active" : "nav-mobile-link" } onClick={() => {setMenuOpen(false);window.scrollTo(0, 0);}}>
           CAUSES
         </NavLink>
-        <NavLink to="/treatment" className="nav-mobile-link" onClick={() => setMenuOpen(false)}>
+        <NavLink to="/treatment" className={({ isActive }) => isActive ? "nav-mobile-link active" : "nav-mobile-link" } onClick={() => {setMenuOpen(false);window.scrollTo(0, 0);}}>
           TREATMENT
         </NavLink>
-        <NavLink to="/support" className="nav-mobile-link" onClick={() => setMenuOpen(false)}>
+        <NavLink to="/support" className={({ isActive }) => isActive ? "nav-mobile-link active" : "nav-mobile-link" } onClick={() => {setMenuOpen(false);window.scrollTo(0, 0);}}>
           SUPPORT
         </NavLink>
-        <NavLink to="/nutrition" className="nav-mobile-link" onClick={() => setMenuOpen(false)}>
+        <NavLink to="/nutrition" className={({ isActive }) => isActive ? "nav-mobile-link active" : "nav-mobile-link" } onClick={() => {setMenuOpen(false);window.scrollTo(0, 0);}}>
           HEALTHY HABITS
         </NavLink>
        <button
-            className="nav-mobile-link"
-            onClick={() => { setMenuOpen(false); handleQuizClick(); }}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', padding: 0 }}
-          >
-            Take The Quiz
-          </button>
+          className={`nav-mobile-link${isOnQuiz ? ' active' : ''}`}
+          onClick={() => { setMenuOpen(false); handleQuizClick(); }}
+          style={{ background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', padding: 0 }}
+        >
+          Take The Quiz
+        </button>
       </div>
 
     </nav>
