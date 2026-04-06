@@ -1,36 +1,15 @@
 /* ================================================================
    Quiz.css
-   ----------------------------------------------------------------
-   📌 PURPOSE:
-   All styles specific to the Quiz page and its sub-components.
-   Imported directly inside Quiz.jsx.
-
-   📐 SECTIONS IN THIS FILE:
-     1.  Quiz page wrapper       (.quiz-page)
-     2.  Page title              (.quiz-title)
-     3.  Arabic button           (.quiz-arabic-btn)
-     4.  Card container          (.quiz-card)
-     5.  Progress bar            (.quiz-progress-bar, .quiz-progress-fill)
-     6.  Question counter        (.quiz-counter)
-     7.  Section header          (.quiz-section-header)
-     8.  Question text           (.quiz-question)
-     9.  Answer options          (.quiz-options, .quiz-option)
-     10. Selected option state   (.quiz-option.selected)
-     11. Navigation buttons      (.quiz-nav, .quiz-btn-back, .quiz-btn-next)
-     12. Results screen          (.quiz-result-*)
-     13. Responsive              (≤768px, ≤480px)
    ================================================================ */
 
 
 /* ────────────────────────────────────────────────────────────────
    1. QUIZ PAGE WRAPPER
-   Full-viewport white background for the quiz.
-   Has top padding to clear the fixed navbar.
 ──────────────────────────────────────────────────────────────── */
 .quiz-page {
   min-height: 100vh;
-  background: #f5f7fa;        /* light grey-white — clean, clinical feel  */
-  padding-top: 110px;         /* clears the fixed navbar                  */
+  background: #f5f7fa;
+  padding-top: 110px;
   padding-bottom: 60px;
   display: flex;
   flex-direction: column;
@@ -40,7 +19,6 @@
 
 /* ────────────────────────────────────────────────────────────────
    2. PAGE TITLE + ARABIC BUTTON ROW
-   Title on the left, optional Arabic button on the right.
 ──────────────────────────────────────────────────────────────── */
 .quiz-header-row {
   width: 100%;
@@ -52,8 +30,9 @@
   margin-bottom: 28px;
   padding: 0 16px;
 }
-.question-counter-category{
-    width: 100%;
+
+.question-counter-category {
+  width: 100%;
   max-width: 760px;
   display: flex;
   align-items: flex-start;
@@ -63,18 +42,16 @@
   padding: 0 16px;
 }
 
-/* "DOES MY CHILD SHOW SIGNS OF ADHD?" */
 .quiz-title {
   font-family: var(--font-display);
   font-size: clamp(1.3rem, 3.5vw, 2rem);
   font-weight: 800;
-  color: var(--color-nav-blue);             /* deep navy — authoritative, readable       */
+  color: var(--color-nav-blue);
   letter-spacing: -0.02em;
   line-height: 1.2;
   flex: 1;
 }
 
-/* "عربية" pill button — links to Arabic version if needed */
 .quiz-arabic-btn {
   flex-shrink: 0;
   padding: 10px 24px;
@@ -86,35 +63,30 @@
   border: none;
   cursor: pointer;
   transition: opacity var(--transition-normal);
+  text-decoration: none;
 }
-
-.quiz-arabic-btn:hover {
-  opacity: 0.85;
-}
+.quiz-arabic-btn:hover { opacity: 0.85; }
 
 .quiz-desc {
   max-width: 760px;
   padding: 0 16px;
   margin-top: -15px;
   margin-bottom: 24px;
-
   font-family: var(--font-body);
-  color: rgb(54, 65, 73); 
-
+  color: rgb(54, 65, 73);
   line-height: 1.5;
   font-size: clamp(0.5rem, 2vw, 1rem);
   font-weight: 600;
+}
 
+.screening-graph {
+  color: #999da4;
+  font-size: clamp(0.3rem, 1.5vw, 1rem);
 }
-.screening-graph{
-    color: #999da4;
-    font-size: clamp(0.3rem, 1.5vw, 1rem);
-}
+
 
 /* ────────────────────────────────────────────────────────────────
-   3. QUIZ CARD
-   The white rounded card that holds the progress bar,
-   question, options, and navigation buttons.
+   3. QUIZ CARD (shared shell)
 ──────────────────────────────────────────────────────────────── */
 .quiz-card {
   width: 100%;
@@ -129,30 +101,26 @@
 
 /* ────────────────────────────────────────────────────────────────
    4. PROGRESS BAR
-   Shows how far through the quiz the user is.
-   The blue fill grows as questions are answered.
 ──────────────────────────────────────────────────────────────── */
 .quiz-progress-bar {
   width: 100%;
   height: 6px;
-  background: #e5e7eb;        /* light grey track                          */
+  background: #e5e7eb;
   border-radius: 99px;
   overflow: hidden;
   margin-bottom: 20px;
 }
 
-/* The blue fill — width is set inline by React as a % */
 .quiz-progress-fill {
   height: 100%;
   background: var(--color-blue);
   border-radius: 99px;
-  transition: width 0.4s ease; /* smooth animation as progress grows        */
+  transition: width 0.4s ease;
 }
 
 
 /* ────────────────────────────────────────────────────────────────
    5. QUESTION COUNTER
-   "Question 4 of 55" — shown in blue above the question text.
 ──────────────────────────────────────────────────────────────── */
 .quiz-counter {
   font-size: 0.85rem;
@@ -165,41 +133,36 @@
 
 
 /* ────────────────────────────────────────────────────────────────
-   6. SECTION HEADER BADGE
-   Shows which section the user is in:
-   "INATTENTIVE SYMPTOMS", "HYPERACTIVE SYMPTOMS", etc.
+   6. SECTION BADGE
 ──────────────────────────────────────────────────────────────── */
 .quiz-section-badge {
   display: inline-block;
   font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.08em;
-  text-transform:initial;
-  padding: 4px px;
+  text-transform: initial;
+  padding: 4px 0;
   border-radius: var(--radius-sm);
   margin-bottom: 16px;
-  color: #999da4 ;
+  color: #999da4;
 }
-
 
 
 /* ────────────────────────────────────────────────────────────────
    7. QUESTION TEXT
-   The main question shown to the user.
 ──────────────────────────────────────────────────────────────── */
 .quiz-question {
   font-family: var(--font-body);
   font-size: clamp(1rem, 2.5vw, 1.2rem);
   font-weight: 600;
   line-height: 1.5;
-  color: #1f2937;             /* very dark grey — high readability          */
+  color: #1f2937;
   margin-bottom: 28px;
 }
 
 
 /* ────────────────────────────────────────────────────────────────
-   8. ANSWER OPTIONS LIST
-   Vertical list of clickable answer buttons.
+   8. ANSWER OPTIONS
 ──────────────────────────────────────────────────────────────── */
 .quiz-options {
   display: flex;
@@ -208,14 +171,13 @@
   margin-bottom: 32px;
 }
 
-/* Individual answer option button */
 .quiz-option {
   display: flex;
   align-items: center;
   gap: 16px;
   padding: 16px 20px;
   border-radius: var(--radius-pill);
-  border: 2px solid #e5e7eb;  /* light grey border by default              */
+  border: 2px solid #e5e7eb;
   background: #f9fafb;
   cursor: pointer;
   transition:
@@ -233,10 +195,9 @@
 .quiz-option:hover {
   border-color: var(--color-blue);
   background: #f0f9ff;
-  transform: translateX(4px); /* subtle slide right on hover               */
+  transform: translateX(4px);
 }
 
-/* SELECTED STATE — blue filled pill (matches the design mockup) */
 .quiz-option.selected {
   background: var(--color-blue);
   border-color: var(--color-blue);
@@ -244,7 +205,6 @@
   transform: none;
 }
 
-/* The radio circle on the left */
 .quiz-option-radio {
   width: 22px;
   height: 22px;
@@ -256,7 +216,6 @@
   justify-content: center;
 }
 
-/* Filled dot inside the radio circle when selected */
 .quiz-option.selected .quiz-option-radio::after {
   content: '';
   display: block;
@@ -266,16 +225,11 @@
   background: #ffffff;
 }
 
-/* The label text */
-.quiz-option-label {
-  font-weight: 500;
-}
+.quiz-option-label { font-weight: 500; }
 
 
 /* ────────────────────────────────────────────────────────────────
-   9. NAVIGATION BUTTONS (Back / Next)
-   Back is light grey, Next is blue pill.
-   Next is disabled and greyed out until an option is selected.
+   9. NAVIGATION BUTTONS
 ──────────────────────────────────────────────────────────────── */
 .quiz-nav {
   display: flex;
@@ -284,7 +238,6 @@
   gap: 16px;
 }
 
-/* BACK button */
 .quiz-btn-back {
   padding: 14px 32px;
   border-radius: var(--radius-pill);
@@ -296,18 +249,9 @@
   cursor: pointer;
   transition: background var(--transition-fast), color var(--transition-fast);
 }
+.quiz-btn-back:hover:not(:disabled) { background: #d1d5db; color: #374151; }
+.quiz-btn-back:disabled { opacity: 0.4; cursor: not-allowed; }
 
-.quiz-btn-back:hover:not(:disabled) {
-  background: #d1d5db;
-  color: #374151;
-}
-
-.quiz-btn-back:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-/* NEXT / SUBMIT button */
 .quiz-btn-next {
   padding: 14px 40px;
   border-radius: var(--radius-pill);
@@ -319,24 +263,12 @@
   cursor: pointer;
   transition: opacity var(--transition-fast), transform var(--transition-fast);
 }
-
-.quiz-btn-next:hover:not(:disabled) {
-  opacity: 0.85;
-  transform: translateY(-1px);
-}
-
-/* Greyed out until user selects an answer */
-.quiz-btn-next:disabled {
-  background: #9ca3af;
-  cursor: not-allowed;
-  transform: none;
-}
+.quiz-btn-next:hover:not(:disabled) { opacity: 0.85; transform: translateY(-1px); }
+.quiz-btn-next:disabled { background: #9ca3af; cursor: not-allowed; transform: none; }
 
 
 /* ────────────────────────────────────────────────────────────────
    10. RESULTS SCREEN
-   Shown after the last question is submitted.
-   Uses a card layout matching the quiz card.
 ──────────────────────────────────────────────────────────────── */
 .quiz-result-card {
   width: 100%;
@@ -349,7 +281,12 @@
   text-align: center;
 }
 
-/* Section title "Your Results" */
+.quiz-result-greeting {
+  font-size: 1rem;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
 .quiz-result-title {
   font-family: var(--font-display);
   font-size: clamp(1.4rem, 4vw, 2.2rem);
@@ -364,7 +301,6 @@
   margin-bottom: 36px;
 }
 
-/* Individual diagnosis result badge */
 .quiz-result-diagnosis {
   border-radius: var(--radius-md);
   padding: 24px 28px;
@@ -372,28 +308,11 @@
   text-align: left;
 }
 
-/* Color variants per diagnosis type */
-.quiz-result-diagnosis.inattentive {
-  background: #e0f2fe;
-  border-left: 4px solid var(--color-blue);
-}
+.quiz-result-diagnosis.inattentive  { background: #e0f2fe; border-left: 4px solid var(--color-blue); }
+.quiz-result-diagnosis.hyperactive  { background: #fce7f3; border-left: 4px solid var(--color-pink); }
+.quiz-result-diagnosis.combined     { background: linear-gradient(135deg, #e0f2fe, #fce7f3); border-left: 4px solid var(--color-purple); }
+.quiz-result-diagnosis.none         { background: #d1fae5; border-left: 4px solid #10b981; }
 
-.quiz-result-diagnosis.hyperactive {
-  background: #fce7f3;
-  border-left: 4px solid var(--color-pink);
-}
-
-.quiz-result-diagnosis.combined {
-  background: linear-gradient(135deg, #e0f2fe, #fce7f3);
-  border-left: 4px solid var(--color-purple);
-}
-
-.quiz-result-diagnosis.none {
-  background: #d1fae5;
-  border-left: 4px solid #10b981;
-}
-
-/* Diagnosis type label e.g. "Predominantly Inattentive" */
 .quiz-result-diagnosis-type {
   font-family: var(--font-display);
   font-size: 1.1rem;
@@ -402,14 +321,8 @@
   margin-bottom: 6px;
 }
 
-/* Description text */
-.quiz-result-diagnosis-desc {
-  font-size: 0.9rem;
-  color: #374151;
-  line-height: 1.6;
-}
+.quiz-result-diagnosis-desc { font-size: 0.9rem; color: #374151; line-height: 1.6; }
 
-/* Score breakdown row */
 .quiz-result-scores {
   display: flex;
   gap: 16px;
@@ -434,13 +347,8 @@
   line-height: 1;
 }
 
-.quiz-result-score-label {
-  font-size: 0.8rem;
-  color: #6b7280;
-  margin-top: 4px;
-}
+.quiz-result-score-label { font-size: 0.8rem; color: #6b7280; margin-top: 4px; }
 
-/* Medical disclaimer inside results */
 .quiz-result-disclaimer {
   font-size: 0.82rem;
   color: #9ca3af;
@@ -450,7 +358,6 @@
   border-top: 1px solid #e5e7eb;
 }
 
-/* Retake button */
 .quiz-result-retake {
   margin-top: 24px;
   padding: 14px 40px;
@@ -463,62 +370,343 @@
   cursor: pointer;
   transition: opacity var(--transition-fast);
 }
+.quiz-result-retake:hover { opacity: 0.85; }
 
-.quiz-result-retake:hover {
-  opacity: 0.85;
+
+/* ════════════════════════════════════════════════════════════════
+   INTAKE SCREEN STYLES
+════════════════════════════════════════════════════════════════ */
+
+.quiz-intake-card {
+  padding: 40px 40px 36px;
+}
+
+/* ── Intake header ─────────────────────────────────────────── */
+.qi-header {
+  margin-bottom: 36px;
+}
+
+.qi-step-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-blue);
+  background: #e0f2fe;
+  padding: 4px 12px;
+  border-radius: 99px;
+  margin-bottom: 14px;
+}
+
+.qi-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 3vw, 1.7rem);
+  font-weight: 800;
+  color: var(--color-nav-blue);
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+
+.qi-subtitle {
+  font-size: 0.95rem;
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+/* ── Field wrapper ─────────────────────────────────────────── */
+.qi-field {
+  margin-bottom: 32px;
+}
+
+.qi-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  gap: 8px;
+}
+
+.qi-label {
+  font-family: var(--font-display);
+  font-size: 0.97rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.qi-optional-tag {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #9ca3af;
+  background: #f3f4f6;
+  padding: 3px 10px;
+  border-radius: 99px;
+  flex-shrink: 0;
+}
+
+.qi-required-tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-pink);
+  background: #fce7f3;
+  padding: 3px 10px;
+  border-radius: 99px;
+  flex-shrink: 0;
+}
+
+/* ── Name input + anonymous toggle row ─────────────────────── */
+.qi-anon-toggle {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.qi-input {
+  flex: 1;
+  padding: 13px 18px;
+  border: 2px solid #e5e7eb;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: #1f2937;
+  background: #f9fafb;
+  transition: border-color 0.2s, background 0.2s;
+  outline: none;
+}
+
+.qi-input:focus {
+  border-color: var(--color-blue);
+  background: #ffffff;
+}
+
+.qi-input--disabled {
+  background: #f3f4f6;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.qi-anon-btn {
+  flex-shrink: 0;
+  padding: 13px 18px;
+  border-radius: var(--radius-pill);
+  border: 2px solid #e5e7eb;
+  background: #f9fafb;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.qi-anon-btn:hover {
+  border-color: #d1d5db;
+  background: #f3f4f6;
+}
+
+.qi-anon-btn--active {
+  border-color: var(--color-blue);
+  background: #e0f2fe;
+  color: var(--color-blue);
+}
+
+.qi-anon-note {
+  font-size: 0.82rem;
+  color: #6b7280;
+  margin-top: 8px;
+  padding-left: 4px;
+}
+
+
+/* ── Age grid — 5-per-row pill buttons ─────────────────────── */
+.qi-age-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+ 
+.qi-age-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  padding: 12px 6px;
+  border-radius: var(--radius-md);
+  border: 2px solid #e5e7eb;
+  background: #f9fafb;
+  cursor: pointer;
+  transition: border-color 0.18s, background 0.18s, transform 0.18s;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #374151;
+}
+ 
+.qi-age-btn:hover {
+  border-color: var(--color-blue);
+  background: #f0f9ff;
+  color: #1a1a2e;
+  transform: translateY(-2px);
+}
+ 
+.qi-age-btn--selected {
+  background: var(--color-blue);
+  border-color: var(--color-blue);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+.qi-age-btn:active{
+    background: var(--color-blue);
+  border-color: var(--color-blue);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+ 
+.qi-age-unit {
+  font-size: 0.65rem;
+  font-weight: 600;
+  opacity: 0.75;
+  letter-spacing: 0.04em;
+  
+}
+
+/* ── Gender row — 2 cards ──────────────────────────────────── */
+.qi-gender-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.qi-gender-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 20px 12px;
+  border-radius: var(--radius-lg);
+  border: 2px solid #e5e7eb;
+  background: #f9fafb;
+  cursor: pointer;
+  transition: border-color 0.18s, background 0.18s, transform 0.18s;
+  text-align: center;
+}
+
+.qi-gender-btn:hover {
+  border-color: var(--color-blue);
+  background: #f0f9ff;
+  transform: translateY(-3px);
+}
+
+.qi-gender-btn--selected {
+  border-color: var(--color-blue);
+  background: #e0f2fe;
+  transform: translateY(-3px);
+}
+
+.qi-gender-emoji {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.qi-gender-label {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #374151;
+  line-height: 1.3;
+}
+
+.qi-gender-btn--selected .qi-gender-label {
+  color: var(--color-blue);
+}
+/*___ suspectt ________________*/
+
+.qi-suspect-row {
+  display: flex;
+  flex-direction: column; /* stack vertically — text is long */
+  gap: 10px;
+}
+
+/* Each answer button */
+.qi-suspect-btn {
+  padding: 12px 18px;
+  border: 1.5px solid #e5e7eb;   /* light grey border when not selected */
+  border-radius: 10px;
+  background: #ffffff;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: #4b5563;
+  cursor: pointer;
+  text-align: left;               /* text aligned left for readability */
+  transition: border-color 0.18s ease, background 0.18s ease, color 0.18s ease;
+}
+
+/* Hover effect */
+.qi-suspect-btn:hover {
+  border-color: var(--color-blue);
+  color: var(--color-blue);
+}
+
+/* Selected state — matches the style of the gender buttons */
+.qi-suspect-btn--selected {
+  background: var(--color-blue);
+  border-color: var(--color-blue);
+  color: #ffffff;
+}
+
+
+/* ── Start button ──────────────────────────────────────────── */
+.qi-start-btn {
+  width: 100%;
+  padding: 16px 40px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(135deg, var(--color-blue), var(--color-pink));
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.qi-start-btn:hover:not(:disabled) {
+  opacity: 0.88;
+  transform: translateY(-2px);
+}
+
+.qi-start-btn:disabled {
+  background: #d1d5db;
+  color: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
 }
 
 
 /* ────────────────────────────────────────────────────────────────
-   RESPONSIVE — QUIZ
+   RESPONSIVE
 ──────────────────────────────────────────────────────────────── */
-
-/* ── Tablet ≤ 768px ── */
 @media (max-width: 768px) {
-
-  .quiz-page {
-    padding-top: 90px;
-  }
-
+  .quiz-page       { padding-top: 90px; }
   .quiz-card,
-  .quiz-result-card {
-    padding: 28px 24px 24px;
-    border-radius: var(--radius-md);
-  }
-
-  .quiz-header-row {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+  .quiz-result-card { padding: 28px 24px 24px; border-radius: var(--radius-md); }
+  .quiz-intake-card { padding: 28px 24px 28px; }
+  .quiz-header-row  { flex-direction: column; align-items: flex-start; }
+  .qi-anon-toggle   { flex-direction: column; }
+  .qi-anon-btn      { text-align: center; }
+  .qi-gender-row    { grid-template-columns: repeat(2, 1fr); }
 }
 
-/* ── Mobile ≤ 480px ── */
 @media (max-width: 480px) {
-
-  .quiz-page {
-    padding-top: 80px;
-    padding-bottom: 40px;
-  }
-
+  .quiz-page        { padding-top: 80px; padding-bottom: 40px; }
   .quiz-card,
-  .quiz-result-card {
-    padding: 22px 18px 20px;
-    margin: 0 8px;
-  }
-
-  .quiz-nav {
-    flex-direction: column-reverse; /* Next on top on mobile */
-    gap: 10px;
-  }
-
+  .quiz-result-card { padding: 22px 18px 20px; margin: 0 8px; }
+  .quiz-intake-card { padding: 22px 18px 24px; margin: 0 8px; }
+  .quiz-nav         { flex-direction: column-reverse; gap: 10px; }
   .quiz-btn-back,
-  .quiz-btn-next {
-    width: 100%;
-    text-align: center;
-  }
-
-  .quiz-result-scores {
-    flex-direction: column;
-    align-items: center;
-  }
+  .quiz-btn-next    { width: 100%; text-align: center; }
+  .quiz-result-scores { flex-direction: column; align-items: center; }
+  .qi-gender-row    { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .qi-gender-btn    { flex-direction: row; gap: 12px; padding: 16px 18px; }
 }

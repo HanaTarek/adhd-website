@@ -1,5 +1,5 @@
 /* ================================================================
-   Arabicquiz.css  — FIXED VERSION
+   Arabicquiz.css
    ================================================================ */
 
 /* ── PAGE WRAPPER ── */
@@ -42,7 +42,7 @@
   font-family: 'Tajawal', var(--font-display), sans-serif;
   font-size: clamp(1.2rem, 3.5vw, 2rem);
   font-weight: 800;
-  color: var(--color-nav-blue); 
+  color: var(--color-nav-blue);
   letter-spacing: 0;
   line-height: 1.4;
   flex: 1;
@@ -85,7 +85,7 @@
   font-size: clamp(0.78rem, 1.5vw, 0.92rem);
 }
 
-/* ── CARD ── */
+/* ── CARD (shared) ── */
 .aquiz-card {
   width: 100%;
   max-width: 760px;
@@ -105,7 +105,7 @@
   overflow: hidden;
   margin-bottom: 20px;
   direction: ltr;
-  transform: scaleX(-1);       /* mirror so fill grows right → left          */
+  transform: scaleX(-1);
 }
 .aquiz-progress-fill {
   height: 100%;
@@ -164,7 +164,7 @@
 .aquiz-option {
   display: flex;
   align-items: center;
-  flex-direction: row;         /* normal row — order property handles swap   */
+  flex-direction: row;
   gap: 16px;
   padding: 16px 20px;
   border-radius: var(--radius-pill);
@@ -193,11 +193,6 @@
   transform: none;
 }
 
-/* ── RADIO CIRCLE ────────────────────────────────────────────────
-   order: 1  → renders AFTER the label → appears on the RIGHT ✅
-   The bug was order: 0 on both elements so the browser ignored it.
-   Now: label is order:-1 (leftmost), radio is order:1 (rightmost).
-──────────────────────────────────────────────────────────────── */
 .aquiz-option-radio {
   width: 22px;
   height: 22px;
@@ -207,7 +202,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  order: 1;                    /* ✅ RIGHT side                               */
+  order: 1;
 }
 .aquiz-option.selected .aquiz-option-radio::after {
   content: '';
@@ -218,18 +213,17 @@
   background: #ffffff;
 }
 
-/* ── OPTION LABEL ── */
 .aquiz-option-label {
   font-weight: 500;
   flex: 1;
   text-align: right;
-  order: -1;                   /* ✅ LEFT side                                */
+  order: -1;
 }
 
 /* ── NAV BUTTONS ── */
 .aquiz-nav {
   display: flex;
-  flex-direction: row-reverse; /* Next on left, Back on right in RTL         */
+  flex-direction: row-reverse;
   justify-content: space-between;
   align-items: center;
   gap: 16px;
@@ -274,6 +268,12 @@
   padding: 48px 40px;
   margin: 0 16px;
   text-align: center;
+}
+.aquiz-result-greeting {
+  font-family: 'Tajawal', var(--font-display), sans-serif;
+  font-size: 1rem;
+  color: #6b7280;
+  margin-bottom: 4px;
 }
 .aquiz-result-title {
   font-family: 'Tajawal', var(--font-display), sans-serif;
@@ -390,19 +390,340 @@
 }
 .aquiz-result-retake:hover { opacity: 0.85; }
 
+
+/* ════════════════════════════════════════════════════════════════
+   ARABIC INTAKE SCREEN — aqi-* prefix (mirrors qi-* in Quiz.css)
+   All RTL adjustments applied throughout.
+════════════════════════════════════════════════════════════════ */
+
+.aquiz-intake-card {
+  padding: 40px 40px 36px;
+}
+
+/* ── Intake header ── */
+.aqi-header {
+  margin-bottom: 36px;
+}
+
+.aqi-step-badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--color-blue);
+  background: #e0f2fe;
+  padding: 4px 12px;
+  border-radius: 99px;
+  margin-bottom: 14px;
+  font-family: 'Tajawal', var(--font-body), sans-serif;
+}
+
+.aqi-title {
+  font-family: 'Tajawal', var(--font-display), sans-serif;
+  font-size: clamp(1.3rem, 3vw, 1.7rem);
+  font-weight: 800;
+  color: var(--color-nav-blue);
+  margin-bottom: 8px;
+}
+
+.aqi-subtitle {
+  font-family: 'Tajawal', var(--font-body), sans-serif;
+  font-size: 0.95rem;
+  color: #6b7280;
+  line-height: 1.7;
+}
+
+/* ── Field wrapper ── */
+.aqi-field {
+  margin-bottom: 32px;
+}
+
+.aqi-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;  /* label on right, tag on left in RTL */
+  margin-bottom: 10px;
+  gap: 8px;
+}
+
+.aqi-label {
+  font-family: 'Tajawal', var(--font-display), sans-serif;
+  font-size: 0.97rem;
+  font-weight: 700;
+  color: #1f2937;
+  text-align: right;
+}
+
+.aqi-optional-tag {
+  font-family: 'Tajawal', var(--font-body), sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #9ca3af;
+  background: #f3f4f6;
+  padding: 3px 10px;
+  border-radius: 99px;
+  flex-shrink: 0;
+}
+
+.aqi-required-tag {
+  font-family: 'Tajawal', var(--font-body), sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-pink);
+  background: #fce7f3;
+  padding: 3px 10px;
+  border-radius: 99px;
+  flex-shrink: 0;
+}
+
+/* ── Name input + anonymous toggle ── */
+.aqi-anon-toggle {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.aqi-input {
+  flex: 1;
+  padding: 13px 18px;
+  border: 2px solid #e5e7eb;
+  border-radius: var(--radius-pill);
+  font-family: 'Tajawal', var(--font-body), sans-serif;
+  font-size: 1rem;
+  color: #1f2937;
+  background: #f9fafb;
+  transition: border-color 0.2s, background 0.2s;
+  outline: none;
+  text-align: right;
+  direction: rtl;
+}
+.aqi-input:focus {
+  border-color: var(--color-blue);
+  background: #ffffff;
+}
+.aqi-input--disabled {
+  background: #f3f4f6;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.aqi-anon-btn {
+  flex-shrink: 0;
+  padding: 13px 18px;
+  border-radius: var(--radius-pill);
+  border: 2px solid #e5e7eb;
+  background: #f9fafb;
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-family: 'Tajawal', var(--font-body), sans-serif;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.aqi-anon-btn:hover {
+  border-color: #d1d5db;
+  background: #f3f4f6;
+}
+.aqi-anon-btn--active {
+  border-color: var(--color-blue);
+  background: #e0f2fe;
+  color: var(--color-blue);
+}
+
+.aqi-anon-note {
+  font-family: 'Tajawal', var(--font-body), sans-serif;
+  font-size: 0.82rem;
+  color: #6b7280;
+  margin-top: 8px;
+  padding-right: 4px;  /* RTL: padding on right not left */
+  text-align: right;
+}
+
+/* ── Age grid — 5-per-row pill buttons ─────────────────────── */
+.aqi-age-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+ 
+.aqi-age-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  padding: 12px 6px;
+  border-radius: var(--radius-md);
+  border: 2px solid #e5e7eb;
+  background: #f9fafb;
+  cursor: pointer;
+  transition: border-color 0.18s, background 0.18s, transform 0.18s;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #374151;
+}
+ 
+.aqi-age-btn:hover {
+  border-color: var(--color-blue);
+  background: #f0f9ff;
+  color: #1a1a2e;
+  transform: translateY(-2px);
+}
+ 
+.aqi-age-btn--selected {
+  background: var(--color-blue);
+  border-color: var(--color-blue);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+.aqi-age-btn:active{
+    background: var(--color-blue);
+  border-color: var(--color-blue);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+ 
+ 
+.aqi-age-unit {
+  font-size: 0.65rem;
+  font-weight: 600;
+  opacity: 0.75;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+
+/* ── Gender row (2 cards, RTL) ── */
+.aqi-gender-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.aqi-gender-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 20px 12px;
+  border-radius: var(--radius-lg);
+  border: 2px solid #e5e7eb;
+  background: #f9fafb;
+  cursor: pointer;
+  transition: border-color 0.18s, background 0.18s, transform 0.18s;
+  text-align: center;
+  font-family: 'Tajawal', var(--font-body), sans-serif;
+}
+.aqi-gender-btn:hover {
+  border-color: var(--color-blue);
+  background: #f0f9ff;
+  transform: translateY(-3px);
+}
+.aqi-gender-btn--selected {
+  border-color: var(--color-blue);
+  background: #e0f2fe;
+  transform: translateY(-3px);
+}
+
+.aqi-gender-emoji {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.aqi-gender-label {
+  font-family: 'Tajawal', var(--font-body), sans-serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #374151;
+  line-height: 1.3;
+}
+.aqi-gender-btn--selected .aqi-gender-label {
+  color: var(--color-blue);
+}
+
+/* ── ARABIC — add to Arabicquiz.css ─────────────────────────── */
+
+/* The row that holds the 3 suspect answer buttons (Arabic) */
+.aqi-suspect-row {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Each button (Arabic — right to left) */
+.aqi-suspect-btn {
+  padding: 12px 18px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  background: #ffffff;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: #4b5563;
+  cursor: pointer;
+  text-align: right;              /* right-aligned for Arabic */
+  direction: rtl;                 /* right-to-left text direction */
+  transition: border-color 0.18s ease, background 0.18s ease, color 0.18s ease;
+}
+
+.aqi-suspect-btn:hover {
+  border-color: var(--color-blue);
+  color: var(--color-blue);
+}
+
+.aqi-suspect-btn--selected {
+  background: var(--color-blue);
+  border-color: var(--color-blue);
+  color: #ffffff;
+}
+
+/* ── Start button ── */
+.aqi-start-btn {
+  width: 100%;
+  padding: 16px 40px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(135deg, var(--color-blue), var(--color-pink));
+  color: #ffffff;
+  font-family: 'Tajawal', var(--font-display), sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.aqi-start-btn:hover:not(:disabled) {
+  opacity: 0.88;
+  transform: translateY(-2px);
+}
+.aqi-start-btn:disabled {
+  background: #d1d5db;
+  color: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+}
+
+
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
   .aquiz-page { padding-top: 90px; }
   .aquiz-card, .aquiz-result-card { padding: 28px 24px 24px; border-radius: var(--radius-md); }
+  .aquiz-intake-card { padding: 28px 24px 28px; }
   .aquiz-header-row { flex-direction: column; align-items: flex-end; }
   .aquiz-arabic-btn { align-self: flex-start; }
+  .aqi-anon-toggle { flex-direction: column; }
+  .aqi-anon-btn { text-align: center; }
 }
 
 @media (max-width: 480px) {
   .aquiz-page { padding-top: 80px; padding-bottom: 40px; }
   .aquiz-card, .aquiz-result-card { padding: 22px 18px 20px; margin: 0 8px; }
+  .aquiz-intake-card { padding: 22px 18px 24px; margin: 0 8px; }
   .aquiz-nav { flex-direction: column; gap: 10px; }
   .aquiz-btn-back, .aquiz-btn-next { width: 100%; text-align: center; }
   .aquiz-result-scores { flex-direction: column; align-items: center; }
   .aquiz-question { font-size: 1rem; line-height: 1.8; }
+  .aqi-gender-row { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .aqi-gender-btn { flex-direction: row; gap: 12px; padding: 16px 18px; }
 }

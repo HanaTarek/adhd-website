@@ -1,0 +1,17 @@
+# ================================================================
+# netlify.toml
+# ================================================================
+# WHERE: Place this file at your project ROOT (same folder as package.json)
+# WHAT:  Tells Netlify how to build your app AND schedule the weekly report
+# ================================================================
+
+[build]
+  command   = "npm run build"   # your build command
+  publish   = "dist"            # where Vite puts the built files
+  functions = "netlify/functions"  # where your serverless functions live
+
+# Schedule the weekly report every Monday at 08:00 UTC
+# Cron format: minute hour day-of-month month day-of-week
+# "0 8 * * 1" = at 08:00, every Monday
+[functions."weekly-report"]
+  schedule = "0 8 * * 1"
