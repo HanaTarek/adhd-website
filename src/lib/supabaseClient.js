@@ -1,28 +1,27 @@
 // ================================================================
-// STEP 3 — supabaseClient.js
+// src/lib/supabaseClient.js  —  React app only
 // ================================================================
-// WHERE TO PUT THIS FILE:
-//   src/lib/supabaseClient.js
-//   (create the "lib" folder inside src if it doesn't exist)
+// This file is used ONLY by your React components (Quiz.jsx etc).
+// It runs in the browser, so it uses import.meta.env (Vite syntax).
+//
+// The weekly-report.js Netlify function has its OWN Supabase client
+// using process.env — it does NOT import this file.
+//
+// REQUIRED in your .env file:
+//   VITE_SUPABASE_URL=https://xxxx.supabase.co
+//   VITE_SUPABASE_ANON_KEY=your_anon_key_here
 // ================================================================
 
-// Import createClient from the Supabase library we installed
 import { createClient } from '@supabase/supabase-js'
 
-// Read the values from your .env file
-// import.meta.env is how Vite reads environment variables
-const supabaseUrl  = import.meta.env.VITE_SUPABASE_URL
-const supabaseKey  = import.meta.env.VITE_SUPABASE_ANON_KEY
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
-// Warn in the console if the env vars are missing
-// This helps you debug — it will never crash your app
 if (!supabaseUrl || !supabaseKey) {
   console.warn(
-    '[Supabase] Missing environment variables. ' +
-    'Make sure VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY are in your .env file.'
+    '[Supabase] Missing env vars. ' +
+    'Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to your .env file.'
   )
 }
 
-// Create and export the Supabase client
-// This is the object we use everywhere to talk to our database
 export const supabase = createClient(supabaseUrl, supabaseKey)
