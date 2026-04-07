@@ -30,17 +30,17 @@ const XLSX             = require('xlsx')
 // We use the SERVICE KEY here (not anon key)
 // Service key can READ all rows — anon key cannot
 const supabase = createClient(
-  process.env.SUPABASE_URL,
+  process.env.VITE_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY
 )
 
 // ================================================================
 // MAIN HANDLER — Netlify calls this automatically on schedule
 // ================================================================
-exports.handler = async () => {
+export const handler = async () => {
   try {
     // Step A: Fetch all data from last 7 days
-    const rows = await fetchWeeklyData()
+    const rows = await fetchData()
 
     // Step B: Calculate analytics from the rows
     const analytics = calculateAnalytics(rows)
@@ -64,18 +64,11 @@ exports.handler = async () => {
 // ================================================================
 // STEP A — Fetch data from Supabase
 // ================================================================
-async function fetchWeeklyData() {
-  // Calculate the date 7 days ago
-  const sevenDaysAgo = new Date()
-  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
-
-  // Query the quiz_results table
-  // .select('*') means "get all columns"
-  // .gte means "greater than or equal to" (filter by date)
+async function fetchData() {
+  
   const { data, error } = await supabase
     .from('quiz_results')
     .select('*')
-    .gte('taken_at', sevenDaysAgo.toISOString())
     .order('taken_at', { ascending: false })
 
   if (error) {
@@ -180,12 +173,16 @@ function calculateAnalytics(rows) {
 
   // Total ADHD results (any subtype)
   const totalAdhd = byResult.combined + byResult.inattentive + byResult.hyperactive
+  
+  const now = new Date();
+
+  const datePart = now.toDateString(); // Tue Apr 07 2026
+  const timePart = now.toTimeString().split(' ')[0]; // 14:32:30
 
   return {
     // Dates for the email subject
-    weekStart: (() => { const d = new Date(); d.setDate(d.getDate() - 7); return d.toDateString() })(),
-    weekEnd:   new Date().toDateString(),
-
+    datePart,
+    timePart,
     total,
     totalAdhd,
 
@@ -342,7 +339,7 @@ async function sendWeeklyEmail(a, excelBuffer) {
 <div class="card">
   <div class="header">
     <h1>📊 Weekly Quiz Report</h1>
-    <p>Listen to Their Minds · ${a.weekStart} – ${a.weekEnd}</p>
+    <p>Listen to Their Minds · ${a.datePart} ${a.timePart}</p>
   </div>
 
   <!-- KPIs -->
@@ -424,8 +421,9 @@ async function sendWeeklyEmail(a, excelBuffer) {
     },
     body: JSON.stringify({
       from:    process.env.REPORT_FROM_EMAIL,  // onboarding@resend.dev
-      to:      [process.env.REPORT_TO_EMAIL],  // your email
-      subject: `📊 Weekly Quiz Report — ${a.total} submissions (${a.weekStart})`,
+      to: [process.env.REPORT_TO_EMAIL, process.env.REPORT_TO_EMAIL_2],
+
+      subject: `📊 Weekly Quiz Report — ${a.total} submissions (${a.datePart} ${a.timePart})`,
       html:    html,
       attachments: [
         {

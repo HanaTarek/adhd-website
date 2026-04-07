@@ -1,5 +1,29 @@
 /* ================================================================
    Quiz.jsx
+   ----------------------------------------------------------------
+   📌 PURPOSE:
+   The interactive ADHD quiz component.
+   Goes through all 55 questions one at a time and shows a
+   detailed results screen at the end.
+
+   📌 HOW IT WORKS (step by step):
+   1. User sees one question at a time (controlled by currentIndex)
+   2. They click an answer → it's saved in the `answers` state object
+   3. They click NEXT → currentIndex advances to the next question
+   4. They click BACK → currentIndex goes to the previous question
+   5. On the last question, NEXT becomes SUBMIT
+   6. After submit → scoreQuiz() calculates the result
+   7. The result screen is shown with the diagnosis
+
+   📌 STATE:
+   - currentIndex {number}  → which question is shown (0-based)
+   - answers {object}       → { questionId: selectedValue, ... }
+   - submitted {boolean}    → true = show results screen
+   - result {object|null}   → returned by scoreQuiz()
+
+   🎨 STYLES: imported from ./Quiz.css
+   📦 DATA:   imported from ../../data/quizData.js
+   📦 USED IN: pages/QuizPage.jsx
    ================================================================ */
 
 import { useState, useEffect } from 'react'
@@ -13,6 +37,11 @@ import {
 } from '../../data/dataQuiz.js'
 import { saveQuizResult } from '../../lib/saveQuizResult'
 
+/* ── Section label map ─────────────────────────────────────────
+   Maps each group letter to a human-readable section label.
+   Displayed as a colored badge above the question.
+─────────────────────────────────────────────────────────────── */
+
 // ✏️ ADDED — the 3 answer options for the new suspect question
 // We store short English keys in state and the database
 const SUSPECT_OPTIONS = [
@@ -20,7 +49,6 @@ const SUSPECT_OPTIONS = [
   { value: 'no',          label: 'No' },
   { value: 'not_thought', label: 'Never gave it enough thought before' },
 ]
-
 
 const SECTION_LABELS = {
   A: 'Inattentive Symptoms',
@@ -31,19 +59,13 @@ const SECTION_LABELS = {
   F: 'Performance & Daily Functioning',
 }
 
-/* Ages 1–70 stored as plain numbers so we can render them however we like */
 const AGE_OPTIONS = [
   4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,
 ]
-// const AGE_OPTIONS = [
-//   '4 years old', '5 years old', '6 years old', '7 years old',
-//   '8 years old', '9 years old', '10 years old', '11 years old',
-//   '12 years old', '13 years old', '14 years old', '15 years old',
-//   '16 years old', '17 years old', '18 years old',
-// ]
 
 const Quiz = () => {
-  const location = useLocation()
+
+  const location = useLocation();
 
   /* ── Stage: 'intake' → 'quiz' → 'results' ─────────────────── */
   const [stage,        setStage]        = useState('intake')
@@ -54,15 +76,14 @@ const Quiz = () => {
   const [childGender,  setChildGender]  = useState('')
   const [isAnonymous,  setIsAnonymous]  = useState(false)
 
-  /* ── Quiz state ────────────────────────────────────────────── */
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [answers,      setAnswers]      = useState({})
-  const [result,       setResult]       = useState(null)
+  const [answers, setAnswers]           = useState({})
+  const [result, setResult]             = useState(null)
+  /* ── Quiz state ────────────────────────────────────────────── */
 
   const [suspectAdhd,  setSuspectAdhd]  = useState('')
-
-  useEffect(() => {
-    if (location.state?.retake) {
+useEffect(() => {
+  if (location.state?.retake) {
       setStage('intake')
       setParentName('')
       setChildAge('')
@@ -71,8 +92,8 @@ const Quiz = () => {
       setCurrentIndex(0)
       setAnswers({})
       setResult(null)
-    }
-  }, [location.state?.retake])
+  }
+}, [location.state?.retake]);
 
   /* ── Intake validation ─────────────────────────────────────── */
   const intakeValid = childAge !== '' && childGender !== '' && suspectAdhd !== ''
@@ -81,20 +102,25 @@ const Quiz = () => {
     if (intakeValid) setStage('quiz')
   }
 
-  /* ── Quiz derived values ───────────────────────────────────── */
-  const currentQuestion = QUESTIONS[currentIndex]
-  const totalQuestions  = QUESTIONS.length
-  const isLastQuestion  = currentIndex === totalQuestions - 1
-  const isFirstQuestion = currentIndex === 0
-  const hasAnswered     = answers[currentQuestion?.id] !== undefined
-  const progressPercent = Math.round((currentIndex / totalQuestions) * 100)
-  const options         = currentQuestion?.type === 'performance'
-    ? PERFORMANCE_OPTIONS : SYMPTOM_OPTIONS
+    /* ── Quiz derived values ───────────────────────────────────── */
+    const currentQuestion = QUESTIONS[currentIndex]
+    const totalQuestions  = QUESTIONS.length
+    const isLastQuestion  = currentIndex === totalQuestions - 1
+    const isFirstQuestion = currentIndex === 0
+    const hasAnswered     = answers[currentQuestion?.id] !== undefined
+    const progressPercent = Math.round((currentIndex / totalQuestions) * 100)
+    const options         = currentQuestion?.type === 'performance'
+      ? PERFORMANCE_OPTIONS : SYMPTOM_OPTIONS
 
   const handleSelect = (value) => {
     setAnswers(prev => ({ ...prev, [currentQuestion.id]: value }))
   }
 
+
+  /* ── Handler: NEXT button ────────────────────────────────────
+     If on last question → score the quiz and show results.
+     Otherwise → advance to the next question.
+  ─────────────────────────────────────────────────────────────── */
   const handleNext = () => {
     if (isLastQuestion) {
       const quizResult = scoreQuiz(answers)
@@ -105,7 +131,7 @@ const Quiz = () => {
       // language is 'ar' for the Arabic quiz
       saveQuizResult({
         result:      quizResult,
-        language:    'ar',
+        language:    'eng',
         parentName:  isAnonymous ? '' : parentName,
         childAge:    childAge,
         childGender: childGender,
@@ -117,10 +143,22 @@ const Quiz = () => {
     }
   }
 
+  /* ── Handler: BACK button ────────────────────────────────────
+     Goes to the previous question.
+     The first question has BACK disabled so this never runs at 0.
+  ─────────────────────────────────────────────────────────────── */
   const handleBack = () => {
-    if (!isFirstQuestion) setCurrentIndex(prev => prev - 1)
+    if (isFirstQuestion) {
+       setStage( 'intake')
+    }
+    else{
+        setCurrentIndex(prev => prev - 1)
+    }
   }
 
+  /* ── Handler: Retake quiz ─────────────────────────────────────
+     Resets ALL state back to defaults — quiz starts fresh.
+  ─────────────────────────────────────────────────────────────── */
   const handleRetake = () => {
     setStage('intake')
     setParentName('')
@@ -133,7 +171,7 @@ const Quiz = () => {
     setSuspectAdhd('')
   }
 
-  /* ── Display name helper ───────────────────────────────────── */
+   /* ── Display name helper ───────────────────────────────────── */
   const displayName = isAnonymous || !parentName.trim()
     ? null
     : parentName.trim()
@@ -158,11 +196,9 @@ const Quiz = () => {
 
           {/* Header */}
           <div className="qi-header">
-            <span className="qi-step-badge">Step 1 of 2</span>
-            <h2 className="qi-title">Before we begin</h2>
+            <h2 className="qi-title">Before We Begin</h2>
             <p className="qi-subtitle">
               A few quick details help put your results in context.
-              Nothing here is stored or shared.
             </p>
           </div>
 
@@ -305,28 +341,28 @@ const Quiz = () => {
     )
   }
 
-  /* ================================================================
-     STAGE 3 — RESULTS SCREEN
-  ================================================================ */
+
+  /* ── RESULTS SCREEN ──────────────────────────────────────────
+     Shown when submitted === true.
+     Displays the diagnosis type and score breakdown.
+  ─────────────────────────────────────────────────────────────── */
   if (stage === 'results' && result) {
     return (
       <div className="quiz-page">
+        {/* Page header */}
         <div className="quiz-header-row">
           <h1 className="quiz-title">DOES MY CHILD SHOW SIGNS OF ADHD?</h1>
+
         </div>
 
         <div className="quiz-result-card">
 
-          {displayName && (
-            <p className="quiz-result-greeting">Hi {displayName} 👋</p>
-          )}
-
           <p className="quiz-result-title">Your Results</p>
           <p className="quiz-result-subtitle">
-            Based on your responses — {childAge} {Number(childAge) === 1 ? 'year old' : 'years old'}
-            {childGender === 'boy' ? ', boy' : childGender === 'girl' ? ', girl' : ''}
+            Based on your responses to all 26 questions
           </p>
 
+          {/* ── Score summary boxes ── */}
           <div className="quiz-result-scores">
             <div className="quiz-result-score-item">
               <div className="quiz-result-score-number">{result.groupAPositives}/9</div>
@@ -344,10 +380,11 @@ const Quiz = () => {
             </div>
           </div>
 
+          {/* ── Diagnosis result ── */}
           {result.isCombined && (
             <div className="quiz-result-diagnosis combined">
               <p className="quiz-result-diagnosis-type">
-                ADHD — Combined Inattentive &amp; Hyperactive/Impulsive
+                ADHD — Combined Inattentive & Hyperactive/Impulsive
               </p>
               <p className="quiz-result-diagnosis-desc">
                 Responses indicate signs of both inattentive and hyperactive/impulsive
@@ -360,7 +397,9 @@ const Quiz = () => {
 
           {!result.isCombined && result.isInattentive && (
             <div className="quiz-result-diagnosis inattentive">
-              <p className="quiz-result-diagnosis-type">Predominantly Inattentive Subtype</p>
+              <p className="quiz-result-diagnosis-type">
+                Predominantly Inattentive Subtype
+              </p>
               <p className="quiz-result-diagnosis-desc">
                 Responses indicate signs of inattentive symptoms with impact on daily
                 functioning. This pattern may be consistent with the Inattentive subtype
@@ -371,7 +410,9 @@ const Quiz = () => {
 
           {!result.isCombined && result.isHyperactive && (
             <div className="quiz-result-diagnosis hyperactive">
-              <p className="quiz-result-diagnosis-type">Predominantly Hyperactive/Impulsive Subtype</p>
+              <p className="quiz-result-diagnosis-type">
+                Predominantly Hyperactive/Impulsive Subtype
+              </p>
               <p className="quiz-result-diagnosis-desc">
                 Responses indicate signs of hyperactive and impulsive symptoms with impact
                 on daily functioning. This pattern may be consistent with the
@@ -383,7 +424,9 @@ const Quiz = () => {
 
           {!result.isInattentive && !result.isHyperactive && (
             <div className="quiz-result-diagnosis none">
-              <p className="quiz-result-diagnosis-type">No Strong ADHD Pattern Detected</p>
+              <p className="quiz-result-diagnosis-type">
+                No Strong ADHD Pattern Detected
+              </p>
               <p className="quiz-result-diagnosis-desc">
                 Based on the responses provided, the answers did not meet the threshold
                 criteria for an ADHD pattern. However, if you have concerns about your
@@ -392,50 +435,87 @@ const Quiz = () => {
             </div>
           )}
 
+          {/* Medical disclaimer */}
           <p className="quiz-result-disclaimer">
             ⚠️ This quiz is based on the NICHQ Vanderbilt Assessment Scale and is for
             educational screening purposes only. It does not constitute a medical diagnosis.
             Always consult a qualified healthcare professional for evaluation and diagnosis.
           </p>
 
+          {/* Retake button */}
           <button className="quiz-result-retake" onClick={handleRetake}>
             Retake Quiz
           </button>
+
         </div>
       </div>
     )
   }
 
-  /* ================================================================
-     STAGE 2 — QUESTION SCREEN
-  ================================================================ */
+  /* ── QUESTION SCREEN (default) ───────────────────────────────
+     Shown for each of the 55 questions.
+  ─────────────────────────────────────────────────────────────── */
   return (
     <div className="quiz-page">
+
+      {/* ── Page title + Arabic button ── */}
       <div>
-        <div className="quiz-header-row">
-          <h1 className="quiz-title">DOES MY CHILD SHOW SIGNS OF ADHD?</h1>
-          <Link to="/arabic-quiz" className="quiz-arabic-btn">العربيه</Link>
-        </div>
-        <p className="quiz-desc">
-          When completing this form, please think about your child's behaviors in the past 6 months.
-          <span className="screening-graph"> This is a screening tool — not a diagnosis.</span>
-        </p>
+      <div className="quiz-header-row">
+        <h1 className="quiz-title">DOES MY CHILD SHOW SIGNS OF ADHD?</h1>
+        <Link to="/arabic-quiz" className="quiz-arabic-btn">
+        العربيه
+        </Link>
+
+        
       </div>
 
+
+
+        <p className="quiz-desc">
+            When completing this form, please think about your child’s behaviors in the past 6 months.
+            <span className='screening-graph'> This is a screening tool — not a diagnosis.</span>
+        </p>
+        </div>
+
+      {/* ── Quiz card ── */}
       <div className="quiz-card">
+
+        {/* ── Progress bar ──
+            Width is set dynamically: (currentIndex / total) * 100 %
+        */}
         <div className="quiz-progress-bar">
-          <div className="quiz-progress-fill" style={{ width: `${progressPercent}%` }} />
+          <div
+            className="quiz-progress-fill"
+            style={{ width: `${progressPercent}%` }}
+          />
         </div>
 
-        <div className="question-counter-category">
-          <p className="quiz-counter">Question {currentIndex + 1} of {totalQuestions}</p>
-          <span className={`quiz-section-badge group-${currentQuestion.group}`}>
-            {SECTION_LABELS[currentQuestion.group]}
-          </span>
-        </div>
+<div className='question-counter-category'>
+        {/* ── Question counter ── */}
+        <p className="quiz-counter">
+          Question {currentIndex + 1} of {totalQuestions}
+        </p>
 
-        <p className="quiz-question">{currentQuestion.text}</p>
+        {/* ── Section badge ──
+            Shows which group/section the current question belongs to.
+            The group letter comes from quizData.js.
+            The CSS class (group-A, group-B, ...) controls the color.
+        */}
+        <span className={`quiz-section-badge group-${currentQuestion.group}`}>
+          {SECTION_LABELS[currentQuestion.group]}
+        </span>
+</div>
+        {/* ── Question text ── */}
+        <p className="quiz-question">
+          {currentQuestion.text}
+        </p>
 
+        {/* ── Answer options ──
+            Maps over the correct options array (symptom or performance).
+            Clicking calls handleSelect(value) to save the answer.
+            The "selected" class is added when this option's value
+            matches what's stored in answers[currentQuestion.id].
+        */}
         <div className="quiz-options">
           {options.map((option) => {
             const isSelected = answers[currentQuestion.id] === option.value
@@ -445,21 +525,37 @@ const Quiz = () => {
                 className={`quiz-option ${isSelected ? 'selected' : ''}`}
                 onClick={() => handleSelect(option.value)}
               >
+                {/* Radio circle */}
                 <span className="quiz-option-radio" />
+                {/* Option label */}
                 <span className="quiz-option-label">{option.label}</span>
               </button>
             )
           })}
         </div>
 
+        {/* ── Navigation: Back + Next/Submit ──
+            BACK: disabled on the first question
+            NEXT: disabled until an answer is selected
+                  changes label to "Submit" on the last question
+        */}
         <div className="quiz-nav">
-          <button className="quiz-btn-back" onClick={handleBack} disabled={isFirstQuestion}>
+          <button
+            className="quiz-btn-back"
+            onClick={handleBack}
+          >
             Back
           </button>
-          <button className="quiz-btn-next" onClick={handleNext} disabled={!hasAnswered}>
+
+          <button
+            className="quiz-btn-next"
+            onClick={handleNext}
+            disabled={!hasAnswered} /* must pick an answer before proceeding */
+          >
             {isLastQuestion ? 'Submit' : 'NEXT'}
           </button>
         </div>
+
       </div>
     </div>
   )

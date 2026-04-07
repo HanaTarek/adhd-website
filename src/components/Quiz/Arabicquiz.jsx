@@ -1,7 +1,3 @@
-/* ================================================================
-   Arabicquiz.jsx
-   ================================================================ */
-
 import { useState } from 'react'
 import './Arabicquiz.css'
 import { Link } from 'react-router-dom'
@@ -14,25 +10,34 @@ import {
 
 import { saveQuizResult } from '../../lib/saveQuizResult'
 
+/* ── Section label map ─────────────────────────────────────────
+   Maps each group letter to a human-readable section label.
+   Displayed as a colored badge above the question.
+─────────────────────────────────────────────────────────────── */
 const SECTION_LABELS = {
   A: 'تشتت الانتباه',
   B: 'فرط الحركة والاندفاعية',
   F: 'الأداء والوظائف اليومية',
 }
 
-/* Ages 1–70 */
 const Arabic_AGE_OPTIONS = [
-  '٤ سنوات', '٥ سنوات', '٦ سنوات', '٧ سنوات',
-  '٨ سنوات', '٩ سنوات', '١٠ سنوات', '١١ سنة',
-  '١٢ سنة', '١٣ سنة', '١٤ سنة', '١٥ سنة',
-  '١٦ سنة', '١٧ سنة', '١٨ سنة',
+  { label: '٤ سنوات', value: 4  },
+  { label: '٥ سنوات', value: 5  },
+  { label: '٦ سنوات', value: 6  },
+  { label: '٧ سنوات', value: 7  },
+  { label: '٨ سنوات', value: 8  },
+  { label: '٩ سنوات', value: 9  },
+  { label: '١٠ سنوات', value: 10 },
+  { label: '١١ سنة',  value: 11 },
+  { label: '١٢ سنة',  value: 12 },
+  { label: '١٣ سنة',  value: 13 },
+  { label: '١٤ سنة',  value: 14 },
+  { label: '١٥ سنة',  value: 15 },
+  { label: '١٦ سنة',  value: 16 },
+  { label: '١٧ سنة',  value: 17 },
+  { label: '١٨ سنة',  value: 18 },
 ];
 
-/*
-  Arabic ordinal suffix helper — returns the correct Arabic suffix
-  for an age number (used in the results subtitle).
-  For simplicity we use "عاماً" (year/years) for all.
-*/
 const ageLabel = (n) => `${n} ${n === 1 ? 'عام' : 'عاماً'}`
 
 const ARABIC_SUSPECT_OPTIONS = [
@@ -43,7 +48,7 @@ const ARABIC_SUSPECT_OPTIONS = [
 
 const Arabicquiz = () => {
 
-  /* ── Stage: 'intake' → 'quiz' → 'results' ─────────────────── */
+   /* ── Stage: 'intake' → 'quiz' → 'results' ─────────────────── */
   const [stage,        setStage]        = useState('intake')
 
   /* ── Intake form state ─────────────────────────────────────── */
@@ -52,43 +57,64 @@ const Arabicquiz = () => {
   const [childGender,  setChildGender]  = useState('')
   const [isAnonymous,  setIsAnonymous]  = useState(false)
 
-  /* ── Quiz state ────────────────────────────────────────────── */
+
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [answers,      setAnswers]      = useState({})
-  const [result,       setResult]       = useState(null)
+  const [answers, setAnswers]           = useState({})
+  const [result, setResult]             = useState(null)
 
   const [suspectAdhd,  setSuspectAdhd]  = useState('')
   /* ── Intake validation ─────────────────────────────────────── */
   const intakeValid = childAge !== '' && childGender !== '' && suspectAdhd !== ''
-
+  
   const handleStartQuiz = () => {
     if (intakeValid) setStage('quiz')
   }
 
-  /* ── Quiz derived values ───────────────────────────────────── */
-  const currentQuestion = QUESTIONS[currentIndex]
-  const totalQuestions  = QUESTIONS.length
-  const isLastQuestion  = currentIndex === totalQuestions - 1
-  const isFirstQuestion = currentIndex === 0
-  const hasAnswered     = answers[currentQuestion?.id] !== undefined
-  const progressPercent = Math.round((currentIndex / totalQuestions) * 100)
-  const options         = currentQuestion?.type === 'performance'
-    ? PERFORMANCE_OPTIONS : SYMPTOM_OPTIONS
 
+  /* ── Derived values ──────────────────────────────────────────
+     These are calculated from state — no need to store separately.
+  ─────────────────────────────────────────────────────────────── */
+  const currentQuestion  = QUESTIONS[currentIndex]           /* current question object */
+  const totalQuestions   = QUESTIONS.length                  /* 55 */
+  const isLastQuestion   = currentIndex === totalQuestions - 1
+  const isFirstQuestion  = currentIndex === 0
+  const hasAnswered      = answers[currentQuestion.id] !== undefined /* has user picked an option? */
+  const progressPercent  = Math.round(((currentIndex) / totalQuestions) * 100)
+
+  /* ── Which answer options to show ────────────────────────────
+     Symptom questions  → Never / Occasionally / Often / Very Often
+     Performance questions → Excellent / Above Average / Average / ...
+  ─────────────────────────────────────────────────────────────── */
+  const options = currentQuestion.type === 'performance'
+    ? PERFORMANCE_OPTIONS
+    : SYMPTOM_OPTIONS
+
+  /* ── Handler: user selects an answer ─────────────────────────
+     Saves { questionId: selectedValue } into the answers object.
+     Using spread (...prev) keeps all previous answers intact.
+  ─────────────────────────────────────────────────────────────── */
   const handleSelect = (value) => {
-    setAnswers(prev => ({ ...prev, [currentQuestion.id]: value }))
+    setAnswers(prev => ({
+      ...prev,
+      [currentQuestion.id]: value,
+    }))
   }
 
+  /* ── Handler: NEXT button ────────────────────────────────────
+     If on last question → score the quiz and show results.
+     Otherwise → advance to the next question.
+  ─────────────────────────────────────────────────────────────── */
   const handleNext = () => {
     if (isLastQuestion) {
-      setResult(scoreQuiz(answers))
+      const quizResult = scoreQuiz(answers)
+      setResult(quizResult)
       setStage('results')
 
       saveQuizResult({
         result:      quizResult,
         language:    'ar',
         parentName:  isAnonymous ? '' : parentName,
-        childAge:    childAge,
+        childAge:    childAge,      // numeric e.g. 8 — stored directly in Supabase
         childGender: childGender,
         suspectAdhd: suspectAdhd,
       })
@@ -98,10 +124,22 @@ const Arabicquiz = () => {
     }
   }
 
+  /* ── Handler: BACK button ────────────────────────────────────
+     Goes to the previous question.
+     The first question has BACK disabled so this never runs at 0.
+  ─────────────────────────────────────────────────────────────── */
   const handleBack = () => {
-    if (!isFirstQuestion) setCurrentIndex(prev => prev - 1)
+    if (isFirstQuestion) {
+       setStage( 'intake')
+    }
+    else{
+        setCurrentIndex(prev => prev - 1)
+    }
   }
 
+  /* ── Handler: Retake quiz ─────────────────────────────────────
+     Resets ALL state back to defaults — quiz starts fresh.
+  ─────────────────────────────────────────────────────────────── */
   const handleRetake = () => {
     setStage('intake')
     setParentName('')
@@ -114,12 +152,13 @@ const Arabicquiz = () => {
     setSuspectAdhd('')
   }
 
-  /* ── Display name helper ───────────────────────────────────── */
+
+    /* ── Display name helper ───────────────────────────────────── */
   const displayName = isAnonymous || !parentName.trim()
     ? null
     : parentName.trim()
 
-  /* ================================================================
+    /* ================================================================
      STAGE 1 — INTAKE SCREEN (Arabic)
   ================================================================ */
   if (stage === 'intake') {
@@ -141,12 +180,9 @@ const Arabicquiz = () => {
 
           {/* Header */}
           <div className="aqi-header">
-            <span className="aqi-step-badge">الخطوة ١ من ٢</span>
             <h2 className="aqi-title">قبل أن نبدأ</h2>
             <p className="aqi-subtitle">
-              بعض التفاصيل السريعة تساعد على تفسير نتائجك بشكل أفضل.
-              لا يتم تخزين أي من هذه المعلومات أو مشاركتها.
-            </p>
+              بعض التفاصيل السريعة تساعد على تفسير نتائجك بشكل أفضل.            </p>
           </div>
 
           {/* ── Parent name ──────────────────────────────────── */}
@@ -201,15 +237,14 @@ const Arabicquiz = () => {
             </div>
  
             <div className="qi-age-grid">
-              {Arabic_AGE_OPTIONS.map(age => (
+              {Arabic_AGE_OPTIONS.map(({ label, value }) => (
                 <button
-                  key={age}
+                  key={value}
                   type="button"
-                  className={`qi-age-btn ${childAge === age ? 'qi-age-btn--selected' : ''}`}
-                  onClick={() => setChildAge(age)}
+                  className={`qi-age-btn ${childAge === value ? 'qi-age-btn--selected' : ''}`}
+                  onClick={() => setChildAge(value)}
                 >
-                  {age.replace(' years old', '')}
-                  <span className="qi-age-unit">سنه</span>
+                  {label}
                 </button>
               ))}
             </div>
@@ -286,28 +321,24 @@ const Arabicquiz = () => {
     )
   }
 
-  /* ================================================================
-     STAGE 3 — RESULTS SCREEN
-  ================================================================ */
+  /* ── RESULTS SCREEN ──────────────────────────────────────────
+     Shown when submitted === true.
+     Displays the diagnosis type and score breakdown.
+  ─────────────────────────────────────────────────────────────── */
   if (stage === 'results' && result) {
     return (
       <div className="aquiz-page">
+        {/* Page header */}
         <div className="aquiz-header-row">
-          <h1 className="aquiz-title">
-            هل تظهر على طفلي علامات اضطراب فرط الحركة ونقص الانتباه؟
-          </h1>
+          <h1 className="aquiz-title">هل تظهر على طفلي علامات اضطراب فرط الحركة ونقص الانتباه؟</h1>
+
         </div>
 
         <div className="aquiz-result-card">
 
-          {displayName && (
-            <p className="aquiz-result-greeting">مرحباً {displayName} 👋</p>
-          )}
-
-          <p className="aquiz-result-title">نتيجة الاختبار</p>
+          <p className="aquiz-result-title">نتيجه الامتحان</p>
           <p className="aquiz-result-subtitle">
-            بناءً على إجاباتك — {childAge && ageLabel(Number(childAge))}
-            {childGender === 'boy' ? '، ولد' : childGender === 'girl' ? '، بنت' : ''}
+            بناءً على إجاباتك على جميع الأسئلة الـ 26
           </p>
 
           {/* ── Score summary boxes ── */}
@@ -318,7 +349,7 @@ const Arabicquiz = () => {
             </div>
             <div className="aquiz-result-score-item">
               <div className="aquiz-result-score-number">{result.groupBPositives}/9</div>
-              <div className="aquiz-result-score-label">نتائج فرط الحركة والاندفاعية</div>
+              <div className="aquiz-result-score-label">نتائج إيجابية بسبب فرط الحركه و الاندفاعيه</div>
             </div>
             <div className="aquiz-result-score-item">
               <div className="aquiz-result-score-number">
@@ -332,13 +363,13 @@ const Arabicquiz = () => {
           {result.isCombined && (
             <div className="aquiz-result-diagnosis combined">
               <p className="aquiz-result-diagnosis-type">
-                اضطراب نقص الانتباه وفرط النشاط — النوع المشترك
+                اضطراب نقص الانتباه وفرط النشاط - هو حالة نمو عصبي تشمل مزيجاً من أعراض قلة الانتباه، فرط النشاط، والاندفاع معاً. 
               </p>
               <p className="aquiz-result-diagnosis-desc">
-                تشير الإجابات إلى وجود علامات لكل من نوع تشتت الانتباه ونوع فرط الحركة/الاندفاعية،
-                مع وجود بعض التأثير على الأداء اليومي. قد يكون هذا النمط متوافقًا مع اضطراب فرط
-                الحركة وتشتت الانتباه من النوع المشترك. يرجى استشارة مختص في الرعاية الصحية لإجراء
-                تقييم كامل.
+                    تشير الإجابات إلى وجود علامات لكل من نوع تشتت الانتباه ونوع فرط الحركة/الاندفاعية، مع 
+                    وجود بعض التأثير على الأداء اليومي. قد يكون هذا النمط متوافقًا مع اضطراب فرط الحركة
+                    وتشتت الانتباه من النوع المشترك. يرجى استشارة مختص في الرعاية الصحية لإجراء تقييم 
+                    كامل
               </p>
             </div>
           )}
@@ -349,9 +380,9 @@ const Arabicquiz = () => {
                 النوع الذي يغلب عليه تشتت الانتباه
               </p>
               <p className="aquiz-result-diagnosis-desc">
-                تشير الإجابات إلى وجود علامات لأعراض تشتت الانتباه مع تأثير على الأداء اليومي.
-                قد يكون هذا النمط متوافقًا مع النوع الذي يغلب عليه تشتت الانتباه من اضطراب فرط
-                الحركة وتشتت الانتباه. يرجى استشارة مختص في الرعاية الصحية لإجراء تقييم كامل.
+            تشير الإجابات إلى وجود علامات لأعراض تشتت الانتباه مع تأثير على الأداء اليومي. قد يكون
+            هذا النمط متوافقًا مع النوع الذي يغلب عليه تشتت الانتباه من اضطراب فرط الحركة وتشتت
+            الانتباه. يرجى استشارة مختص في الرعاية الصحية لإجراء تقييم كامل
               </p>
             </div>
           )}
@@ -362,10 +393,11 @@ const Arabicquiz = () => {
                 النوع الذي يغلب عليه فرط الحركة والاندفاعية
               </p>
               <p className="aquiz-result-diagnosis-desc">
-                تشير الإجابات إلى وجود علامات لأعراض فرط الحركة والاندفاعية مع تأثير على الأداء
-                اليومي. قد يكون هذا النمط متوافقًا مع النوع الذي يغلب عليه فرط الحركة والاندفاعية
-                من اضطراب فرط الحركة وتشتت الانتباه. يرجى استشارة مختص في الرعاية الصحية لإجراء
-                تقييم كامل.
+                    تشير الإجابات إلى وجود علامات لأعراض فرط الحركة والاندفاعية مع تأثير على الأداء
+                    اليومي. قد يكون هذا النمط متوافقًا مع النوع الذي يغلب عليه فرط الحركة والاندفاعية
+                    من اضطراب فرط الحركة وتشتت الانتباه. يرجى استشارة مختص في الرعاية الصحية 
+                    لإجراء تقييم كامل
+
               </p>
             </div>
           )}
@@ -376,61 +408,94 @@ const Arabicquiz = () => {
                 لم يتم اكتشاف نمط قوي لاضطراب فرط الحركة وتشتت الانتباه
               </p>
               <p className="aquiz-result-diagnosis-desc">
-                بناءً على الإجابات المقدمة، لم تصل النتائج إلى الحد المطلوب الذي يشير إلى نمط
-                لاضطراب فرط الحركة وتشتت الانتباه. ومع ذلك، إذا كانت لديك مخاوف بشأن سلوك طفلك،
-                يُرجى استشارة مختص مؤهل في الرعاية الصحية.
+                    بناءً على الإجابات المقدمة، لم تصل النتائج إلى الحد المطلوب الذي يشير إلى نمط 
+                    لاضطراب فرط الحركة وتشتت الانتباه. ومع ذلك، إذا كانت لديك مخاوف بشأن سلوك 
+                    طفلك، يُرجى استشارة مختص مؤهل في الرعاية الصحية
               </p>
             </div>
           )}
 
+          {/* Medical disclaimer */}
           <p className="aquiz-result-disclaimer">
-            ⚠️ هذا الاختبار يعتمد على مقياس تقييم نيشق فاندر بيلت وهو لأغراض الفحص التعليمي فقط.
-            لا يُعد تشخيصًا طبيًا. يُرجى دائمًا استشارة متخصص صحي مؤهل للتقييم والتشخيص.
-          </p>
+                    هذا الاختبار يعتمد على مقياس تقييم نيشق فاندر بيلت وهو لأغراض الفحص ⚠️
+                    التعليمي فقط. لا يُعد تشخيصًا طبيًا. يُرجى دائمًا استشارة متخصص صحي مؤهل 
+                    للتقييم والتشخيص         
+</p>
 
+          {/* Retake button */}
           <button className="aquiz-result-retake" onClick={handleRetake}>
             إعادة الاختبار
           </button>
+
         </div>
       </div>
     )
   }
 
-  /* ================================================================
-     STAGE 2 — QUESTION SCREEN
-  ================================================================ */
+  /* ── QUESTION SCREEN (default) ───────────────────────────────
+     Shown for each of the 55 questions.
+  ─────────────────────────────────────────────────────────────── */
   return (
     <div className="aquiz-page">
-      <div>
-        <div className="aquiz-header-row">
-          <h1 className="aquiz-title">
-            هل تظهر على طفلي علامات اضطراب فرط الحركة ونقص الانتباه؟
-          </h1>
-          <Link to="/quiz" className="aquiz-arabic-btn">English</Link>
-        </div>
 
-        <p className="aquiz-desc">
-          عند إكمال هذا النموذج، يُرجى التفكير في سلوكيات طفلك خلال الأشهر الستة الماضية.
-          <span className="ascreening-graph"> هذه أداة فحص فقط — وليست تشخيصًا.</span>
-        </p>
+      {/* ── Page title + Arabic button ── */}
+      <div>
+      <div className="aquiz-header-row">
+     <h1 className="aquiz-title">هل تظهر على طفلي علامات اضطراب فرط الحركة ونقص الانتباه؟</h1>
+
+        <Link to="/quiz" className="aquiz-arabic-btn">
+        English
+        </Link>
+        
       </div>
 
+
+
+        <p className="aquiz-desc">
+             عند إكمال هذا النموذج، يُرجى التفكير في سلوكيات طفلك خلال الأشهر الستة الماضية
+            <span className='ascreening-graph'><br/> هذه أداة فحص فقط — وليست تشخيصًا<br/></span>
+        </p>
+        </div>
+
+      {/* ── Quiz card ── */}
       <div className="aquiz-card">
+
+        {/* ── Progress bar ──
+            Width is set dynamically: (currentIndex / total) * 100 %
+        */}
         <div className="aquiz-progress-bar">
-          <div className="aquiz-progress-fill" style={{ width: `${progressPercent}%` }} />
+          <div
+            className="aquiz-progress-fill"
+            style={{ width: `${progressPercent}%` }}
+          />
         </div>
 
-        <div className="aquestion-counter-category">
-          <p className="aquiz-counter">
-            السؤال {currentIndex + 1} من {totalQuestions}
-          </p>
-          <span className={`aquiz-section-badge group-${currentQuestion.group}`}>
-            {SECTION_LABELS[currentQuestion.group]}
-          </span>
-        </div>
+<div className='aquestion-counter-category'>
+        {/* ── Question counter ── */}
+        <p className="aquiz-counter">
+          السؤال {currentIndex + 1} من {totalQuestions}
+        </p>
 
-        <p className="aquiz-question">{currentQuestion.text}</p>
+        {/* ── Section badge ──
+            Shows which group/section the current question belongs to.
+            The group letter comes from quizData.js.
+            The CSS class (group-A, group-B, ...) controls the color.
+        */}
+        <span className={`aquiz-section-badge group-${currentQuestion.group}`}>
+          {SECTION_LABELS[currentQuestion.group]}
+        </span>
+</div>
+        {/* ── Question text ── */}
+        <p className="aquiz-question">
+          {currentQuestion.text}
+        </p>
 
+        {/* ── Answer options ──
+            Maps over the correct options array (symptom or performance).
+            Clicking calls handleSelect(value) to save the answer.
+            The "selected" class is added when this option's value
+            matches what's stored in answers[currentQuestion.id].
+        */}
         <div className="aquiz-options">
           {options.map((option) => {
             const isSelected = answers[currentQuestion.id] === option.value
@@ -440,29 +505,40 @@ const Arabicquiz = () => {
                 className={`aquiz-option ${isSelected ? 'selected' : ''}`}
                 onClick={() => handleSelect(option.value)}
               >
+                {/* Radio circle */}
                 <span className="aquiz-option-radio" />
+                {/* Option label */}
                 <span className="aquiz-option-label">{option.label}</span>
               </button>
             )
           })}
         </div>
 
+        {/* ── Navigation: Back + Next/Submit ──
+            BACK: disabled on the first question
+            NEXT: disabled until an answer is selected
+                  changes label to "Submit" on the last question
+        */}
         <div className="aquiz-nav">
-          <button
-            className="aquiz-btn-back"
-            onClick={handleBack}
-            disabled={isFirstQuestion}
-          >
-            رجوع
-          </button>
+
+
           <button
             className="aquiz-btn-next"
             onClick={handleNext}
-            disabled={!hasAnswered}
+            disabled={!hasAnswered} /* must pick an answer before proceeding */
           >
             {isLastQuestion ? 'ارسال' : 'التالي'}
           </button>
+
+
+          <button
+            className="aquiz-btn-back"
+            onClick={handleBack}
+          >
+            رجوع
+          </button>
         </div>
+
       </div>
     </div>
   )
