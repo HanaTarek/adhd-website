@@ -39,6 +39,20 @@ const supabase = createClient(
 // ================================================================
 export const handler = async () => {
   try {
+    try{
+        console.log("RESEND_API_KEY:", process.env.RESEND_API_KEY);
+  console.log("REPORT_FROM_EMAIL:", process.env.REPORT_FROM_EMAIL);
+  console.log("VITE_SUPABASE_URL:", process.env.VITE_SUPABASE_URL);
+  console.log("VITE_SUPABASE_ANON_KEY:", process.env.VITE_SUPABASE_ANON_KEY);
+  console.log("SUPABASE_SERVICE_KEY:", process.env.SUPABASE_SERVICE_KEY);
+  console.log("REPORT_TO_EMAIL:", process.env.REPORT_TO_EMAIL);
+  console.log("REPORT_TO_EMAIL_2:", process.env.REPORT_TO_EMAIL_2);
+
+    }
+    catch(err){
+       statusCode: 200,
+    console.log("failed variables");
+    }
     // Step A: Fetch all data from last 7 days
     const rows = await fetchData()
 
@@ -421,8 +435,7 @@ async function sendWeeklyEmail(a, excelBuffer) {
     },
     body: JSON.stringify({
       from:    process.env.REPORT_FROM_EMAIL,  // onboarding@resend.dev
-      to: [process.env.REPORT_TO_EMAIL, process.env.REPORT_TO_EMAIL_2],
-
+      to: [process.env.REPORT_TO_EMAIL],
       subject: `📊 Weekly Quiz Report — ${a.total} submissions (${a.datePart} ${a.timePart})`,
       html:    html,
       attachments: [
