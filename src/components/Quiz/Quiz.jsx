@@ -28,7 +28,6 @@
 
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import './Quiz.css'
 import {
   QUESTIONS,
   SYMPTOM_OPTIONS,
@@ -36,6 +35,7 @@ import {
   scoreQuiz,
 } from '../../data/dataQuiz.js'
 import { saveQuizResult } from '../../lib/saveQuizResult'
+import './Quiz.css'
 
 /* ── Section label map ─────────────────────────────────────────
    Maps each group letter to a human-readable section label.
@@ -121,7 +121,7 @@ useEffect(() => {
      If on last question → score the quiz and show results.
      Otherwise → advance to the next question.
   ─────────────────────────────────────────────────────────────── */
-  const handleNext = () => {
+  const handleNextEng = () => {
     if (isLastQuestion) {
       const quizResult = scoreQuiz(answers)
       setResult(quizResult)
@@ -129,6 +129,7 @@ useEffect(() => {
 
       // ✏️ ADDED — save all data to Supabase
       // language is 'ar' for the Arabic quiz
+      console.log(quizResult , "eng" ,isAnonymous ? '' : parentName , childAge , childGender , suspectAdhd)
       saveQuizResult({
         result:      quizResult,
         language:    'eng',
@@ -549,7 +550,7 @@ useEffect(() => {
 
           <button
             className="quiz-btn-next"
-            onClick={handleNext}
+            onClick={handleNextEng}
             disabled={!hasAnswered} /* must pick an answer before proceeding */
           >
             {isLastQuestion ? 'Submit' : 'NEXT'}

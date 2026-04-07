@@ -93,3 +93,65 @@ export async function saveQuizResult({
     console.error('[saveQuizResult] Unexpected error:', err)
   }
 }
+export async function saveQuizResultArabic({
+  result,
+  language,
+  parentName,
+  childAge,
+  childGender,
+  suspectAdhd,
+}) {
+  // Safety check — if supabase client wasn't created, do nothing
+  if (!supabase) return
+
+  try {
+    // Insert one row into the quiz_results table
+    // Each key here must match a column name in your Supabase table
+    const { error } = await supabase
+      .from('quiz_results')   // name of your table
+      .insert({
+        // ── Quiz outcome ──────────────────────────────────────
+        result_type: getResultType(result),
+        // 'combined' | 'inattentive' | 'hyperactive' | 'normal'
+
+        group_a_score: result.groupAPositives,
+        // Number of inattentive symptoms scored as Often/Very Often (0–9)
+
+        group_b_score: result.groupBPositives,
+        // Number of hyperactive symptoms scored as Often/Very Often (0–9)
+
+        has_performance_impairment: result.hasPerformanceImpairment,
+        // true or false — whether daily functioning is affected
+
+        language: language,
+        // 'en' or 'ar'
+
+        // ── Demographics ──────────────────────────────────────
+        parent_name: parentName?.trim() || null,
+        // If the parent typed a name, save it. Otherwise save NULL (anonymous).
+        // .trim() removes accidental spaces. || null means "if empty, use null"
+
+        child_age: childAge ,
+        // The age string exactly as selected, e.g. "8 years old" or "٨ سنوات"
+
+        child_gender: childGender ,
+        // 'boy', 'girl', or null if not selected
+
+        // ── New question ──────────────────────────────────────
+        suspect_adhd: suspectAdhd,
+        // 'yes' | 'no' | 'not_thought' | null if not answered
+      })
+
+    // If Supabase returns an error, log it (but don't crash the quiz)
+    if (error) {
+      console.error('[saveQuizResult] Supabase insert error:', error.message)
+    } else {
+      console.log('[saveQuizResult] ✅ Quiz result saved successfully')
+    }
+
+  } catch (err) {
+    // This catches network errors, etc.
+    console.error('[saveQuizResult] Unexpected error:', err)
+  }
+}
+

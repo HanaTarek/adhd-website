@@ -8,7 +8,7 @@ import {
   scoreQuiz,
 } from '../../data/ArabicDataQuiz.js'
 
-import { saveQuizResult } from '../../lib/saveQuizResult'
+import { saveQuizResultArabic } from '../../lib/saveQuizResult'
 
 /* ── Section label map ─────────────────────────────────────────
    Maps each group letter to a human-readable section label.
@@ -104,13 +104,13 @@ const Arabicquiz = () => {
      If on last question → score the quiz and show results.
      Otherwise → advance to the next question.
   ─────────────────────────────────────────────────────────────── */
-  const handleNext = () => {
+  const handleNextArabic = () => {
     if (isLastQuestion) {
       const quizResult = scoreQuiz(answers)
       setResult(quizResult)
       setStage('results')
-
-      saveQuizResult({
+      console.log(quizResult , "ar" ,isAnonymous ? '' : parentName , childAge , childGender , suspectAdhd)
+      saveQuizResultArabic({
         result:      quizResult,
         language:    'ar',
         parentName:  isAnonymous ? '' : parentName,
@@ -524,7 +524,7 @@ const Arabicquiz = () => {
 
           <button
             className="aquiz-btn-next"
-            onClick={handleNext}
+            onClick={handleNextArabic}
             disabled={!hasAnswered} /* must pick an answer before proceeding */
           >
             {isLastQuestion ? 'ارسال' : 'التالي'}
