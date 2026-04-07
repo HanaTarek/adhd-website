@@ -206,7 +206,7 @@ useEffect(() => {
           <div className="qi-field">
             <div className="qi-label-row">
               <label className="qi-label" htmlFor="parentName">
-                Your child name
+                Name
               </label>
               <span className="qi-optional-tag">Optional</span>
             </div>

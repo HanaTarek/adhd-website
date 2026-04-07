@@ -189,7 +189,7 @@ const Arabicquiz = () => {
           <div className="aqi-field">
             <div className="aqi-label-row">
               <label className="aqi-label" htmlFor="aParentName">
-                  أسم طفلك
+                  الأسم
               </label>
               <span className="aqi-optional-tag">اختياري</span>
             </div>
