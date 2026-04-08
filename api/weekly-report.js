@@ -2,7 +2,7 @@
 // Vercel uses ES module format and a different export style
 
 export const config = {
-  runtime: "nodejs",
+  maxDuration: 60,
 }
 
 // Vercel cron functions receive a Request object (Fetch API)
